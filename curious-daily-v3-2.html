@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curious Daily</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='ring' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23e05c1a'/%3E%3Cstop offset='25%25' stop-color='%23cc1a4a'/%3E%3Cstop offset='50%25' stop-color='%236633cc'/%3E%3Cstop offset='75%25' stop-color='%230077cc'/%3E%3Cstop offset='100%25' stop-color='%231a8a3c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23ring)'/%3E%3Crect x='5' y='5' width='54' height='54' rx='10' fill='white'/%3E%3Cpath d='M32 10c-8.84 0-16 7.16-16 16 0 5.72 2.93 10.74 7.33 13.77V44h17.34v-4.23C45.07 36.74 48 31.72 48 26c0-8.84-7.16-16-16-16z' fill='%2314120e' opacity='.85'/%3E%3Crect x='23' y='45.5' width='18' height='3.5' rx='1.75' fill='%2314120e' opacity='.6'/%3E%3Crect x='25' y='50.5' width='14' height='3.5' rx='1.75' fill='%2314120e' opacity='.4'/%3E%3Cline x1='32' y1='6' x2='32' y2='8.5' stroke='%2314120e' stroke-width='2.5' stroke-linecap='round' opacity='.5'/%3E%3Cline x1='50' y1='12' x2='48.2' y2='13.8' stroke='%2314120e' stroke-width='2.5' stroke-linecap='round' opacity='.5'/%3E%3Cline x1='14' y1='12' x2='15.8' y2='13.8' stroke='%2314120e' stroke-width='2.5' stroke-linecap='round' opacity='.5'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   BASE
+══════════════════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --white: #ffffff;
+  --off:   #f8f6f2;
+  --ink:   #14120e;
+  --mid:   #7a7060;
+  --rule:  #e8e2d8;
+  --accent: #e05c1a;
+  --accent-bg: #fff4ee;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--white);
+  color: var(--ink);
+  font-family: 'Outfit', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ══ CATEGORY PALETTES ══
+   Each sets --accent (vivid text/border) and --accent-bg (soft tint) */
+.cat-Science      { --accent:#0077cc; --accent-bg:#e8f4ff; }
+.cat-History      { --accent:#c44f00; --accent-bg:#fff0e8; }
+.cat-Nature       { --accent:#1a8a3c; --accent-bg:#e8f8ee; }
+.cat-HumanBody    { --accent:#cc1a4a; --accent-bg:#ffe8ef; }
+.cat-Space        { --accent:#6633cc; --accent-bg:#f0eaff; }
+.cat-Geography    { --accent:#007a7a; --accent-bg:#e4f5f5; }
+.cat-Mathematics  { --accent:#996600; --accent-bg:#fff8e0; }
+.cat-Psychology   { --accent:#cc2266; --accent-bg:#ffe8f2; }
+.cat-Technology   { --accent:#006633; --accent-bg:#e4f5ea; }
+.cat-Economics    { --accent:#884400; --accent-bg:#fff0e0; }
+.cat-Language     { --accent:#5500cc; --accent-bg:#ede8ff; }
+.cat-Music        { --accent:#cc0055; --accent-bg:#ffe8f0; }
+.cat-Sports       { --accent:#004db3; --accent-bg:#e4eeff; }
+.cat-Food         { --accent:#aa4400; --accent-bg:#fff2e8; }
+.cat-Philosophy   { --accent:#8b0000; --accent-bg:#ffeaea; }
+.cat-Biology      { --accent:#1a7a1a; --accent-bg:#e8f8e8; }
+.cat-Physics      { --accent:#003399; --accent-bg:#e4eaff; }
+.cat-Chemistry    { --accent:#006666; --accent-bg:#e4f5f5; }
+
+/* ══════════════════════════════════════════
+   VIEWS
+══════════════════════════════════════════ */
+.view { display: none; min-height: 100vh; flex-direction: column; }
+.view.active { display: flex; }
+
+/* ══════════════════════════════════════════
+   HEADER + LOGO
+══════════════════════════════════════════ */
+.site-header {
+  width: 100%;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1.5px solid var(--rule);
+  position: sticky; top: 0;
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(14px);
+  z-index: 60;
+  gap: 10px;
+}
+
+/* ── LOGO ── */
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer; text-decoration: none; flex-shrink: 0;
+}
+
+.logo-icon {
+  width: 40px; height: 40px; flex-shrink: 0;
+  position: relative;
+}
+
+/* animated gradient ring around the icon */
+.logo-ring {
+  position: absolute; inset: 0;
+  border-radius: 12px;
+  background: conic-gradient(
+    #e05c1a 0%, #cc1a4a 22%, #6633cc 44%, #0077cc 66%, #1a8a3c 88%, #e05c1a 100%
+  );
+  animation: spin 8s linear infinite;
+  opacity: .85;
+}
+.logo-ring-inner {
+  position: absolute; inset: 3px;
+  background: white;
+  border-radius: 9px;
+  z-index: 1;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* the mark inside */
+.logo-mark-svg {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.logo-wordmark {
+  display: flex; flex-direction: column; line-height: 1;
+}
+.logo-wordmark .w1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.18rem; font-weight: 900;
+  color: var(--ink);
+  letter-spacing: -.02em;
+}
+.logo-wordmark .w2 {
+  font-size: 9px; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--mid); margin-top: 2px;
+}
+
+/* ── HEADER RIGHT ── */
+.header-right {
+  display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+}
+
+.hbtn {
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1.5px solid var(--rule);
+  background: none;
+  font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600;
+  color: var(--mid); cursor: pointer; transition: all .18s; white-space: nowrap;
+}
+.hbtn:hover { border-color: var(--ink); color: var(--ink); }
+
+/* translate button — vivid */
+.hbtn-translate {
+  background: var(--accent, #e05c1a);
+  color: white !important;
+  border-color: transparent !important;
+  display: flex; align-items: center; gap: 5px;
+}
+.hbtn-translate:hover { opacity: .88; transform: translateY(-1px); }
+
+/* ══════════════════════════════════════════
+   HOME — MAIN AREA
+══════════════════════════════════════════ */
+.home-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 20px 90px;
+  max-width: 700px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* date + streak row */
+.meta-row {
+  width: 100%;
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 22px;
+}
+.meta-date {
+  font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--mid);
+}
+.meta-line { flex: 1; height: 1px; background: var(--rule); }
+.meta-streak {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600; color: var(--mid);
+}
+.fire { font-size: 15px; }
+
+/* category badge */
+.cat-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 6px 18px;
+  border-radius: 100px;
+  border: 2px solid var(--accent);
+  background: var(--accent-bg);
+  font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+  transition: all .4s ease;
+}
+.badge-emoji { font-size: 15px; }
+
+/* ── FACT CARD ── */
+.fact-card {
+  width: 100%;
+  background: var(--white);
+  border: 2px solid var(--rule);
+  border-top: 4px solid var(--accent);
+  border-radius: 20px;
+  padding: 38px 40px 32px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 32px rgba(0,0,0,.06);
+  transition: border-color .4s;
+  animation: cardIn .5s cubic-bezier(.16,1,.3,1) both;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(18px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0)   scale(1);    }
+}
+
+/* big decorative letter */
+.card-deco {
+  position: absolute; top: -18px; right: 26px;
+  font-family: 'Playfair Display', serif;
+  font-size: 8rem; font-weight: 900; font-style: italic;
+  color: var(--accent); opacity: .07;
+  line-height: 1; pointer-events: none;
+  transition: color .4s;
+  user-select: none;
+}
+
+/* ── FACT TEXT — vivid color ── */
+.fact-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.08rem, 2.6vw, 1.28rem);
+  font-weight: 700;
+  line-height: 1.78;
+  color: var(--accent);          /* VIVID accent color */
+  position: relative; z-index: 1;
+  transition: color .4s;
+}
+
+/* Hebrew translation */
+.fact-text-he {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(.95rem, 2.3vw, 1.1rem);
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--ink);
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  direction: rtl;
+  text-align: right;
+  display: none;
+}
+.fact-text-he.visible { display: block; }
+.he-label {
+  font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--mid); display: block; margin-bottom: 6px;
+}
+
+.card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--rule);
+  flex-wrap: wrap; gap: 8px;
+}
+.card-meta { font-size: 11.5px; color: var(--mid); }
+.card-btns { display: flex; gap: 7px; }
+.icon-btn {
+  width: 34px; height: 34px; border-radius: 8px;
+  border: 1.5px solid var(--rule); background: white;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 15px; transition: all .18s; color: var(--mid);
+}
+.icon-btn:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.07); }
+
+/* ── NAV ── */
+.fact-nav {
+  display: flex; align-items: center; justify-content: center;
+  gap: 14px; margin-top: 22px; width: 100%;
+}
+.nav-arrow {
+  background: none; border: 1.5px solid var(--rule);
+  border-radius: 10px; padding: 9px 20px;
+  font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--mid); cursor: pointer; transition: all .18s;
+}
+.nav-arrow:hover { border-color: var(--accent); color: var(--accent); }
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--rule);
+  cursor: pointer; transition: all .2s;
+}
+.dot.active { background: var(--accent); width: 20px; border-radius: 3px; }
+
+/* ── INFO TILES ── */
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; width: 100%; }
+.tile {
+  background: var(--off); border: 1.5px solid var(--rule); border-radius: 14px;
+  padding: 15px 18px; display: flex; align-items: center; gap: 12px;
+}
+.tile-ico { font-size: 22px; }
+.tile-num { font-family: 'Playfair Display', serif; font-size: 1.55rem; font-weight: 700; color: var(--accent); line-height: 1; }
+.tile-lbl { font-size: 11px; color: var(--mid); font-weight: 500; margin-top: 3px; }
+
+/* ── REMINDER ROW ── */
+.reminder-row {
+  width: 100%; margin-top: 10px;
+  background: var(--off); border: 1.5px solid var(--rule); border-radius: 14px;
+  padding: 13px 18px; display: flex; align-items: center; gap: 12px;
+  cursor: pointer; transition: border-color .18s;
+}
+.reminder-row:hover { border-color: var(--accent); }
+.r-label { flex: 1; font-size: 13px; color: var(--mid); }
+.r-time { font-size: 13px; font-weight: 700; color: var(--accent); }
+.r-edit { font-size: 11px; color: var(--mid); }
+
+/* ══════════════════════════════════════════
+   ALL FACTS VIEW
+══════════════════════════════════════════ */
+#allFacts { background: var(--white); }
+
+.view-top {
+  position: sticky; top: 0;
+  background: rgba(255,255,255,0.97); backdrop-filter: blur(14px);
+  border-bottom: 1.5px solid var(--rule);
+  padding: 14px 22px; display: flex; align-items: center; gap: 12px;
+  z-index: 60; flex-wrap: wrap;
+}
+.view-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; flex: 1; }
+
+.search-wrap { position: relative; }
+.search-wrap input {
+  background: var(--off); border: 1.5px solid var(--rule); border-radius: 10px;
+  padding: 9px 14px 9px 36px;
+  font-family: 'Outfit', sans-serif; font-size: 13px; color: var(--ink);
+  outline: none; width: 210px; transition: border .2s;
+}
+.search-wrap input:focus { border-color: var(--ink); }
+.search-wrap input::placeholder { color: var(--mid); }
+.s-ico { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--mid); font-size: 14px; pointer-events: none; }
+
+.facts-content { max-width: 1360px; margin: 0 auto; padding: 26px 18px 80px; }
+
+.cat-section { margin-bottom: 34px; }
+.cat-sec-hdr {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1.5px solid var(--rule);
+}
+.cat-sec-title { font-family: 'Playfair Display', serif; font-size: .95rem; font-weight: 700; color: var(--accent); }
+.cat-count { font-size: 11px; color: var(--mid); background: var(--off); border: 1px solid var(--rule); border-radius: 20px; padding: 2px 8px; }
+
+.facts-grid { columns: 290px; column-gap: 12px; }
+.mini-card {
+  break-inside: avoid; margin-bottom: 10px;
+  background: var(--off); border: 1.5px solid var(--rule); border-radius: 12px;
+  padding: 14px 16px; cursor: pointer; transition: all .18s;
+  border-right: 3px solid var(--accent);
+}
+.mini-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,.09); transform: translateY(-2px); }
+.mini-card.is-today { background: var(--accent-bg); border-color: var(--accent); }
+.mini-today-tag { font-size: 10px; font-weight: 700; color: var(--accent); margin-bottom: 5px; letter-spacing: .06em; }
+.mini-text { font-family: 'Playfair Display', serif; font-size: 13px; line-height: 1.65; color: var(--ink); font-weight: 700; }
+.mini-text-he { font-size: 12px; line-height: 1.6; color: var(--mid); margin-top: 7px; direction: rtl; text-align: right; display: none; }
+.mini-text-he.visible { display: block; }
+
+/* ══════════════════════════════════════════
+   SETTINGS VIEW
+══════════════════════════════════════════ */
+#settings { background: var(--white); }
+.settings-body { max-width: 520px; margin: 0 auto; padding: 26px 18px 80px; }
+.s-card {
+  background: var(--off); border: 1.5px solid var(--rule); border-radius: 16px;
+  padding: 20px; margin-bottom: 14px;
+}
+.s-card h3 {
+  font-family: 'Playfair Display', serif; font-size: .88rem;
+  color: var(--mid); letter-spacing: .08em; text-transform: uppercase;
+  margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--rule);
+}
+.s-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,.04);
+}
+.s-row:last-child { border-bottom: none; }
+.s-lbl { font-size: 14px; }
+.s-sub { font-size: 11px; color: var(--mid); margin-top: 2px; }
+
+/* toggle */
+.tog { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+.tog input { opacity: 0; position: absolute; }
+.tog-track {
+  position: absolute; inset: 0; background: var(--rule); border-radius: 24px; cursor: pointer; transition: .25s;
+}
+.tog-track::after {
+  content: ''; position: absolute; left: 3px; top: 3px;
+  width: 18px; height: 18px; border-radius: 50%; background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,.15); transition: .25s;
+}
+.tog input:checked + .tog-track { background: var(--ink); }
+.tog input:checked + .tog-track::after { transform: translateX(20px); }
+
+/* time inputs */
+.time-row { display: flex; align-items: center; gap: 6px; }
+.tnum {
+  background: white; border: 1.5px solid var(--rule); border-radius: 8px;
+  width: 52px; padding: 8px 0; text-align: center;
+  font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700;
+  color: var(--ink); outline: none; transition: border .2s;
+}
+.tnum:focus { border-color: var(--ink); }
+.tsep { font-size: 1.2rem; font-weight: 700; color: var(--mid); }
+
+.save-btn {
+  width: 100%; padding: 15px; border-radius: 12px; border: none;
+  background: var(--ink); color: #fff;
+  font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700;
+  cursor: pointer; transition: opacity .2s; margin-top: 6px;
+  letter-spacing: .02em;
+}
+.save-btn:hover { opacity: .84; }
+
+/* ══════════════════════════════════════════
+   BOTTOM NAV
+══════════════════════════════════════════ */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(255,255,255,.97); backdrop-filter: blur(16px);
+  border-top: 1.5px solid var(--rule);
+  display: flex; z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 10px 0 13px; border: none; background: none; cursor: pointer;
+  font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 600;
+  letter-spacing: .04em; color: var(--mid); transition: color .18s;
+}
+.nav-btn .n-ico { font-size: 20px; }
+.nav-btn.active { color: var(--accent, #e05c1a); }
+
+/* ══════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════ */
+.toast {
+  position: fixed; bottom: 78px; left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: var(--ink); color: white; border-radius: 10px;
+  padding: 10px 20px; font-size: 13px; font-weight: 500;
+  opacity: 0; transition: all .28s; z-index: 999;
+  pointer-events: none; white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ══════════════════════════════════════════
+   Hebrew RTL adjustments
+══════════════════════════════════════════ */
+.rtl-mode .fact-text { direction: rtl; text-align: right; font-family: 'Outfit', sans-serif; font-weight: 700; }
+.rtl-mode .fact-text-he { display: block !important; }
+
+main { padding-bottom: 72px; }
+</style>
+</head>
+<body>
+<main>
+
+<!-- ═══════════ HOME ═══════════ -->
+<div id="home" class="view active cat-Science">
+  <header class="site-header">
+
+    <!-- LOGO -->
+    <div class="logo" onclick="showView('home')">
+      <div class="logo-icon">
+        <div class="logo-ring"></div>
+        <div class="logo-ring-inner"></div>
+        <div class="logo-mark-svg">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <!-- lightbulb silhouette -->
+            <path d="M13 3C9.13 3 6 6.13 6 10c0 2.5 1.28 4.7 3.2 6.03V18h7.6v-1.97C18.72 14.7 20 12.5 20 10c0-3.87-3.13-7-7-7z" fill="#14120e" opacity=".85"/>
+            <rect x="9.5" y="19" width="7" height="1.5" rx=".75" fill="#14120e" opacity=".6"/>
+            <rect x="10.5" y="21.5" width="5" height="1.5" rx=".75" fill="#14120e" opacity=".4"/>
+            <!-- spark lines -->
+            <line x1="13" y1="1" x2="13" y2="2.2" stroke="#14120e" stroke-width="1.4" stroke-linecap="round" opacity=".5"/>
+            <line x1="21" y1="4" x2="20.1" y2="4.9" stroke="#14120e" stroke-width="1.4" stroke-linecap="round" opacity=".5"/>
+            <line x1="5" y1="4" x2="5.9" y2="4.9" stroke="#14120e" stroke-width="1.4" stroke-linecap="round" opacity=".5"/>
+          </svg>
+        </div>
+      </div>
+      <div class="logo-wordmark">
+        <span class="w1">Curious Daily</span>
+        <span class="w2">One fact · Every day</span>
+      </div>
+    </div>
+
+    <!-- RIGHT ACTIONS -->
+    <div class="header-right">
+      <button class="hbtn" onclick="showView('allFacts')">All Facts</button>
+      <button class="hbtn hbtn-translate" id="translateBtn" onclick="toggleTranslate()">🇮🇱 עברית</button>
+      <button class="hbtn" onclick="showView('settings')">⚙</button>
+    </div>
+  </header>
+
+  <div class="home-body">
+    <!-- meta row -->
+    <div class="meta-row">
+      <span class="meta-date" id="metaDate">—</span>
+      <span class="meta-line"></span>
+      <span class="meta-streak"><span class="fire">🔥</span><span id="streakDisp">0</span> day streak</span>
+    </div>
+
+    <!-- category badge -->
+    <div class="cat-badge" id="catBadge">
+      <span class="badge-emoji" id="badgeEmoji">🔬</span>
+      <span id="badgeName">Science</span>
+    </div>
+
+    <!-- main card -->
+    <div class="fact-card" id="factCard">
+      <div class="card-deco" id="cardDeco">"</div>
+      <p class="fact-text" id="factText">Loading today's fact…</p>
+      <div class="fact-text-he" id="factTextHe">
+        <span class="he-label">תרגום לעברית</span>
+        <span id="heText"></span>
+      </div>
+      <div class="card-footer">
+        <span class="card-meta" id="cardMeta"></span>
+        <div class="card-btns">
+          <button class="icon-btn" title="Translate" onclick="toggleTranslate()">🇮🇱</button>
+          <button class="icon-btn" title="Copy" onclick="copyFact()">📋</button>
+          <button class="icon-btn" title="Share" onclick="shareFact()">↗</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- nav -->
+    <div class="fact-nav">
+      <button class="nav-arrow" onclick="prevFact()">← Yesterday</button>
+      <div class="dots" id="navDots"></div>
+      <button class="nav-arrow" onclick="nextFact()">Tomorrow →</button>
+    </div>
+
+    <!-- tiles -->
+    <div class="tiles">
+      <div class="tile">
+        <span class="tile-ico">🔥</span>
+        <div>
+          <div class="tile-num" id="tileStreak">0</div>
+          <div class="tile-lbl">Day streak</div>
+        </div>
+      </div>
+      <div class="tile">
+        <span class="tile-ico">📚</span>
+        <div>
+          <div class="tile-num" id="tileSeen">0</div>
+          <div class="tile-lbl">Facts seen</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- reminder -->
+    <div class="reminder-row" onclick="showView('settings')">
+      <span style="font-size:18px">🔔</span>
+      <span class="r-label">Daily reminder</span>
+      <span class="r-time" id="remDisp">Not set</span>
+      <span class="r-edit">Edit →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ ALL FACTS ═══════════ -->
+<div id="allFacts" class="view">
+  <div class="view-top">
+    <button class="hbtn" onclick="showView('home')">← Back</button>
+    <span class="view-title">All 365 Facts</span>
+    <div class="search-wrap">
+      <span class="s-ico">🔍</span>
+      <input type="text" id="searchIn" placeholder="Search…" oninput="filterFacts()">
+    </div>
+    <button class="hbtn hbtn-translate" onclick="toggleTranslateAll()" id="translateAllBtn">🇮🇱 עברית</button>
+  </div>
+  <div class="facts-content" id="factsContent"></div>
+</div>
+
+<!-- ═══════════ SETTINGS ═══════════ -->
+<div id="settings" class="view">
+  <div class="view-top">
+    <button class="hbtn" onclick="showView('home')">← Back</button>
+    <span class="view-title">Settings</span>
+  </div>
+  <div class="settings-body">
+
+    <div class="s-card">
+      <h3>🔔 Daily Reminder</h3>
+      <div class="s-row">
+        <div>
+          <div class="s-lbl">Enable reminder</div>
+          <div class="s-sub">Daily notification to open the app</div>
+        </div>
+        <label class="tog">
+          <input type="checkbox" id="remEn" onchange="toggleTR()">
+          <span class="tog-track"></span>
+        </label>
+      </div>
+      <div class="s-row" id="timeRow" style="opacity:.35;pointer-events:none">
+        <div class="s-lbl">Reminder time</div>
+        <div class="time-row">
+          <input type="number" class="tnum" id="remH" value="08" min="0" max="23" onchange="padN(this,23)">
+          <span class="tsep">:</span>
+          <input type="number" class="tnum" id="remM" value="00" min="0" max="59" onchange="padN(this,59)">
+        </div>
+      </div>
+    </div>
+
+    <div class="s-card">
+      <h3>📊 Stats</h3>
+      <div class="s-row"><span class="s-lbl">Current streak</span><span id="sSt" style="font-family:'Playfair Display',serif;font-weight:700;">0</span></div>
+      <div class="s-row"><span class="s-lbl">Facts seen</span><span id="sSn" style="font-family:'Playfair Display',serif;font-weight:700;">0</span></div>
+    </div>
+
+    <div class="s-card">
+      <h3>⚠ Reset</h3>
+      <div class="s-row">
+        <div><div class="s-lbl">Reset usage data</div><div class="s-sub">Clears streak and seen count</div></div>
+        <button class="hbtn" style="color:#cc1a4a;border-color:#cc1a4a" onclick="resetData()">Reset</button>
+      </div>
+    </div>
+
+    <button class="save-btn" onclick="saveSettings()">Save Settings</button>
+  </div>
+</div>
+
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" id="nav-home" onclick="showView('home')">
+    <span class="n-ico">✦</span>Today
+  </button>
+  <button class="nav-btn" id="nav-allFacts" onclick="showView('allFacts')">
+    <span class="n-ico">📚</span>All Facts
+  </button>
+  <button class="nav-btn" id="nav-settings" onclick="showView('settings')">
+    <span class="n-ico">⚙</span>Settings
+  </button>
+</nav>
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════════
+//  365 FACTS  (English + Hebrew translation)
+// ══════════════════════════════════════════════════════
+const FACTS = [
+// Science
+{c:"Science",s:"Science",e:"🔬",
+ t:"The speed of light in a vacuum is exactly 299,792,458 m/s — a value so precisely defined it is used to set the length of a metre itself.",
+ h:"מהירות האור בוואקום היא בדיוק 299,792,458 מ' לשנייה — ערך מדויק כל כך שהוא משמש להגדרת אורך המטר עצמו."},
+{c:"Science",s:"Science",e:"🔬",
+ t:"Absolute zero (−273.15 °C) is the coldest possible temperature. At this point, particles stop all thermal motion.",
+ h:"אפס מוחלט (−273.15°C) הוא הטמפרטורה הנמוכה ביותר האפשרית. בנקודה זו, חלקיקים מפסיקים את כל תנועתם התרמית."},
+{c:"Science",s:"Science",e:"🔬",
+ t:"The 1887 Michelson–Morley experiment proved that the speed of light is constant in every direction — a pillar of Einstein's relativity.",
+ h:"ניסוי מיכלסון-מורלי (1887) הוכיח שמהירות האור קבועה בכל כיוון — אחד מעמודי התווך של תורת היחסות של איינשטיין."},
+{c:"Science",s:"Science",e:"🔬",
+ t:"Penicillin was discovered in 1928 by Alexander Fleming, who noticed that mould on a petri dish was killing surrounding bacteria.",
+ h:"פניצילין התגלה ב-1928 על ידי אלכסנדר פלמינג, שהבחין שעובש על צלחת פטרי הורג את החיידקים שסביבו."},
+{c:"Science",s:"Science",e:"🔬",
+ t:"Radio waves, infrared, visible light, UV, X-rays, and gamma rays are all electromagnetic radiation — differing only in wavelength.",
+ h:"גלי רדיו, אינפרא-אדום, אור נראה, UV, קרינת X וגאמה — כולן קרינה אלקטרומגנטית. ההבדל היחיד ביניהן הוא האורך-גל."},
+{c:"Science",s:"Science",e:"🔬",
+ t:"Liquid oxygen is pale blue. In its gaseous form it is colourless, but as a liquid O₂ molecules absorb red-orange light.",
+ h:"חמצן נוזלי הוא בעל גוון כחלחל. בצורתו הגזית הוא חסר צבע, אך בצורה נוזלית מולקולות O₂ סופחות אור אדום-כתום."},
+{c:"Science",s:"Science",e:"🔬",
+ t:"The First Law of Thermodynamics: energy can neither be created nor destroyed — it can only be converted from one form to another.",
+ h:"החוק הראשון של תרמודינמיקה: אנרגיה לעולם אינה נוצרת ואינה נהרסת — היא רק מומרת מצורה לצורה."},
+{c:"Science",s:"Science",e:"🔬",
+ t:"Thomas Young's double-slit experiment (1801) proved that light behaves as a wave by producing an interference pattern.",
+ h:"ניסוי שני-הסדקים של תומס יאנג (1801) הוכיח שאור מתנהג כגל על ידי יצירת דפוס הפרעה."},
+{c:"Science",s:"Science",e:"🔬",
+ t:"Atmospheric pressure on every square centimetre of your body is about 1 kg — you don't feel it because internal pressure balances it.",
+ h:"הלחץ האטמוספרי על כל סנטימטר רבוע מגופך הוא כ-1 ק\"ג — אינך מרגיש זאת כי הלחץ הפנימי מאזן אותו."},
+{c:"Science",s:"Science",e:"🔬",
+ t:"Wilhelm Röntgen discovered X-rays by accident in 1895 when he noticed a vacuum tube making a distant fluorescent screen glow.",
+ h:"וילהלם רנטגן גילה קרינת X בטעות ב-1895 כשהבחין שצינור ואקום מאיר מסך פלואורסצנטי מרוחק."},
+{c:"Science",s:"Science",e:"🔬",
+ t:"The strong nuclear force holds protons and neutrons together — it is the most powerful of the four fundamental forces at short range.",
+ h:"הכוח הגרעיני החזק מחזיק פרוטונים וניוטרונים יחד — הוא החזק ביותר מארבעת הכוחות הבסיסיים בטווח קצר."},
+{c:"Science",s:"Science",e:"🔬",
+ t:"The water molecule is polar: oxygen pulls electrons more strongly than hydrogen, creating a partial negative charge near the oxygen end.",
+ h:"מולקולת המים היא פולרית: חמצן שולף אלקטרונים חזק יותר ממימן, יוצר מטען שלילי חלקי בצד החמצן."},
+{c:"Science",s:"Science",e:"🔬",
+ t:"Nylon, invented in 1935 at DuPont, was the first fully synthetic textile fibre made entirely from coal, water, and air.",
+ h:"ניילון, שהומצא ב-1935 בדופונט, היה סיב הטקסטיל הסינתטי הראשון שיוצר לחלוטין מפחם, מים ואוויר."},
+{c:"Science",s:"Science",e:"🔬",
+ t:"Maxwell's equations (1865) unified electricity and magnetism into a single force — electromagnetism — one of physics' greatest achievements.",
+ h:"משוואות מקסוול (1865) איחדו חשמל ומגנטיות לכוח אחד — אלקטרומגנטיזם — אחת מהישגי הפיזיקה הגדולים ביותר."},
+{c:"Science",s:"Science",e:"🔬",
+ t:"Archimedes' principle: buoyancy equals the weight of fluid displaced — said to have prompted the famous 'Eureka!' shout.",
+ h:"עקרון ארכימדס: כוח הציפה שווה למשקל הנוזל המוזזה — אמרו שהוביל לצעקת 'יוּרֵקָא' המפורסמת."},
+{c:"Science",s:"Science",e:"🔬",
+ t:"The Mpemba effect: hot water can sometimes freeze faster than cold water — documented and named after a Tanzanian student in 1963.",
+ h:"אפקט מפמבה: מים חמים יכולים לעיתים להקפיא מהר יותר ממים קרים — תועד ונקרא על שם תלמיד טנזני ב-1963."},
+{c:"Science",s:"Science",e:"🔬",
+ t:"A mole in chemistry is 6.022 × 10²³ particles — the Avogadro constant — linking atomic-scale quantities to lab-scale masses.",
+ h:"מול בכימיה הוא 6.022×10²³ חלקיקים — קבוע אבוגדרו — המקשר כמויות בסולם אטומי לכמויות בסולם מעבדה."},
+{c:"Science",s:"Science",e:"🔬",
+ t:"Moore's Law (1965) predicted that transistor counts on chips would double every two years — a trend sustained for over five decades.",
+ h:"חוק מור (1965) ניבא שמספר הטרנזיסטורים בשבב יכפיל עצמו כל שנתיים — מגמה שנשמרה ליותר מחמישה עשורים."},
+{c:"Science",s:"Science",e:"🔬",
+ t:"Nuclear zero-point energy means particles never truly rest even at absolute zero — the uncertainty principle forbids complete stillness.",
+ h:"אנרגיית אפס-נקודה גרעינית אומרת שחלקיקים לעולם אינם נחים לחלוטין — עקרון אי-הוודאות אוסר מנוחה מוחלטת."},
+{c:"Science",s:"Science",e:"🔬",
+ t:"The Sun's outer corona reaches millions of degrees Celsius — far hotter than its visible surface at ~5,500 °C. The reason remains a mystery.",
+ h:"הקורונה החיצונית של השמש מגיעה למיליוני מעלות צלזיוס — הרבה יותר חמה מהפני השטח הנראים (~5,500°C). הסיבה עדיין תעלומה."},
+// History
+{c:"History",s:"History",e:"📜",
+ t:"The Western Roman Empire fell in AD 476, but the Eastern Byzantine Empire continued for nearly a thousand more years, until 1453.",
+ h:"האימפריה הרומאית המערבית נפלה ב-476 לספירה, אך הביזנטית המזרחית המשיכה עוד קרוב לאלף שנה, עד 1453."},
+{c:"History",s:"History",e:"📜",
+ t:"Magna Carta (1215) was the first document to formally limit a monarch's power — a cornerstone of modern democracy.",
+ h:"מגנה קרטה (1215) הייתה המסמך הראשון שהגביל רשמית את כוחו של מלך — אבן-פינה של הדמוקרטיה המודרנית."},
+{c:"History",s:"History",e:"📜",
+ t:"The Black Death killed between one-third and half of Europe's population between 1347 and 1351 — roughly 25 million people.",
+ h:"המגפה השחורה הרגה בין שליש למחצית מאוכלוסיית אירופה בין 1347 ל-1351 — כ-25 מיליון איש."},
+{c:"History",s:"History",e:"📜",
+ t:"Alexander the Great conquered roughly 5 million km² by age 30 — from Greece to northwestern India — without losing a single battle.",
+ h:"אלכסנדר הגדול כבש כ-5 מיליון קמ\"ר עד גיל 30 — מיוון ועד צפון-מערב הודו — מבלי להפסיד ולו קרב אחד."},
+{c:"History",s:"History",e:"📜",
+ t:"Columbus did not prove Earth was round — Eratosthenes calculated its circumference with impressive accuracy around 240 BC.",
+ h:"קולומבוס לא הוכיח שהארץ עגולה — ארטוסתנס חישב את היקפה בדיוק מרשים כבר סביב 240 לפנה\"ס."},
+{c:"History",s:"History",e:"📜",
+ t:"Julius Caesar was stabbed 23 times on 15 March 44 BC by a group of senators including Brutus. Only one wound was deemed fatal.",
+ h:"יוליוס קיסר נדקר 23 פעמים ב-15 במרץ 44 לפנה\"ס על ידי קבוצת סנאטורים כולל ברוטוס. רק פצע אחד נחשב קטלני."},
+{c:"History",s:"History",e:"📜",
+ t:"The Manhattan Project employed over 130,000 people at its peak and cost ~$2 billion, equivalent to roughly $30 billion today.",
+ h:"פרויקט מנהטן העסיק מעל 130,000 איש בשיאו ועלה כ-2 מיליארד דולר, שווה ערך לכ-30 מיליארד דולר כיום."},
+{c:"History",s:"History",e:"📜",
+ t:"Cuneiform script, developed by Sumerians around 3400 BC, is one of the earliest writing systems — used mainly for trade records.",
+ h:"כתב יתד, שפותח על ידי הסומרים סביב 3400 לפנה\"ס, הוא אחד מהכתבים הקדומים ביותר — שימש בעיקר לרישום עסקאות מסחר."},
+{c:"History",s:"History",e:"📜",
+ t:"The Mongol Empire was the largest contiguous land empire in history — at its 1270 peak it covered 24 million km².",
+ h:"האימפריה המונגולית הייתה האימפריה היבשתית הרצופה הגדולה ביותר בהיסטוריה — בשיאה ב-1270 כיסתה 24 מיליון קמ\"ר."},
+{c:"History",s:"History",e:"📜",
+ t:"The Treaty of Versailles (1919) blamed Germany solely for WWI and imposed crippling reparations — helping fuel the rise of Nazism.",
+ h:"הסכם וורסאי (1919) האשים את גרמניה לבדה במלחמת העולם הראשונה והטיל פיצויים כבדים — מה שסייע להצמיח את הנאציזם."},
+{c:"History",s:"History",e:"📜",
+ t:"The 1918–19 Spanish Flu killed 50–100 million people worldwide — more than all WWI combat deaths combined.",
+ h:"שפעת הספרדית (1918–19) הרגה 50–100 מיליון איש ברחבי העולם — יותר מכל הרוגי הקרב של מלחמת העולם הראשונה יחד."},
+{c:"History",s:"History",e:"📜",
+ t:"Tutankhamun's tomb was discovered nearly intact in 1922 by Howard Carter — one of archaeology's greatest finds.",
+ h:"קברו של תות-עאנח-אמון התגלה כמעט שלם ב-1922 על ידי הווארד קרטר — אחד הגילויים הגדולים ביותר בארכאולוגיה."},
+{c:"History",s:"History",e:"📜",
+ t:"The Titanic sank on 15 April 1912, two hours and 40 minutes after hitting an iceberg. About 1,500 of 2,224 people on board died.",
+ h:"הטיטאניק טבע ב-15 באפריל 1912, שעתיים ו-40 דקות לאחר פגיעה בקרחון. כ-1,500 מ-2,224 אנשים שעל סיפונו מתו."},
+{c:"History",s:"History",e:"📜",
+ t:"The Berlin Wall fell on 9 November 1989 — one of the 20th century's most symbolic moments, signalling the end of the Cold War.",
+ h:"חומת ברלין נפלה ב-9 בנובמבר 1989 — אחד הרגעים הסמליים ביותר של המאה ה-20, שסימן את סוף המלחמה הקרה."},
+{c:"History",s:"History",e:"📜",
+ t:"The French Revolution (1789–1799) abolished the monarchy, executed Louis XVI in 1793, and ultimately brought Napoleon to power.",
+ h:"המהפכה הצרפתית (1789–1799) ביטלה את המלוכה, הוציאה להורג את לואי ה-16 ב-1793, ובסופו של דבר העלתה את נפוליאון לשלטון."},
+{c:"History",s:"History",e:"📜",
+ t:"Much of the Great Wall of China was built during the Ming Dynasty (1368–1644), not in ancient times as commonly assumed.",
+ h:"חלקים גדולים מהחומה הסינית הגדולה נבנו בתקופת שושלת מינג (1368–1644), ולא בעת עתיקה כפי שנהוג לחשוב."},
+{c:"History",s:"History",e:"📜",
+ t:"In 1800 fewer than 3% of the world lived in cities; today more than 55% do — a transformation driven by industrialisation.",
+ h:"ב-1800 פחות מ-3% מהעולם גרו בערים; כיום יותר מ-55% — שינוי שהונע על ידי התיעוש."},
+{c:"History",s:"History",e:"📜",
+ t:"ENIAC, the first general-purpose electronic computer (1945), weighed 27 tonnes and could perform 5,000 additions per second.",
+ h:"ENIAC, המחשב האלקטרוני הראשון למטרות כלליות (1945), שקל 27 טונות ויכול לבצע 5,000 חיבורים בשנייה."},
+{c:"History",s:"History",e:"📜",
+ t:"ARPANET's first message, sent 29 October 1969, was the word 'LOGIN'. The system crashed after just the letters 'L' and 'O'.",
+ h:"ההודעה הראשונה של ARPANET, שנשלחה ב-29 באוקטובר 1969, הייתה המילה 'LOGIN'. המערכת קרסה לאחר האותיות 'L' ו-'O' בלבד."},
+{c:"History",s:"History",e:"📜",
+ t:"On 20 July 1969, Neil Armstrong became the first human to walk on the Moon during the Apollo 11 mission.",
+ h:"ב-20 ביולי 1969 הפך ניל ארמסטרונג לאדם הראשון שהלך על הירח במסגרת משימת אפולו 11."},
+// Nature
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"Giant sequoias are the largest plants on Earth by volume. 'General Sherman' in California weighs about 1,385 tonnes.",
+ h:"עצי הסקוויה הענקיים הם הצמחים הגדולים ביותר לפי נפח. 'הגנרל שרמן' בקליפורניה שוקל כ-1,385 טון."},
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"Dolphins sleep with half their brain at a time — one hemisphere stays awake for breathing and alertness (unihemispheric sleep).",
+ h:"דולפינים ישנים עם חצי מוחם בלבד — אחת ההמיספרות תמיד ערה לצורכי נשימה וערנות (שינה אוניהמיספרית)."},
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"Octopuses can change colour and texture in a fraction of a second. Most are colour-blind, yet achieve near-perfect camouflage.",
+ h:"תמנונים יכולים לשנות צבע ומרקם בשבריר שנייה. רובם עיוורי-צבע, ובכל זאת משיגים הסוואה כמעט מושלמת."},
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"Honeybees perform a 'waggle dance' to communicate the exact direction and distance to a food source using the sun as a reference.",
+ h:"דבורי-דבש מבצעות 'ריקוד נדנדה' כדי לתקשר את הכיוון המדויק ואת המרחק למקור מזון, תוך שימוש בשמש כנקודת ייחוס."},
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"The Great Barrier Reef is the largest biological structure on Earth at 2,300 km — the only living thing visible from space.",
+ h:"שונית האלמוגים הגדולה היא המבנה הביולוגי הגדול ביותר בכדור הארץ באורך 2,300 ק\"מ — היצור החי היחיד הנראה מהחלל."},
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"The blue whale's heart alone weighs about 400 kg — roughly the size of a small car. It is the largest animal ever known to have lived.",
+ h:"לב הלוויתן הכחול שוקל לבדו כ-400 ק\"ג — בערך כגודל מכונית קטנה. הוא בעל-החיים הגדול ביותר שחי אי פעם."},
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"Trees communicate chemically: when attacked by insects, many species release volatile signals that warn neighbouring trees.",
+ h:"עצים מתקשרים כימית: כשתוקפים אותם חרקים, מינים רבים משחררים אותות נדיפים שמזהירים עצים שכנים."},
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"The tardigrade (water bear) can survive the vacuum of space, intense radiation, and temperatures from −272 °C to 150 °C.",
+ h:"הטרדיגרדה (דוב-מים) יכולה לשרוד בוואקום של החלל, קרינה עזה וטמפרטורות בין −272°C ל-150°C."},
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"Hummingbirds are the only birds capable of flying backwards — they beat their wings 50–80 times per second to hover.",
+ h:"ציפורות הזעיר הן הציפורים היחידות המסוגלות לעוף אחורה — הן מניפות כנפיהן 50–80 פעמים בשנייה כדי לרחף."},
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"Baobab trees in Africa can store up to 120,000 litres of water in their enormous trunks.",
+ h:"עצי באובאב באפריקה יכולים לאחסן עד 120,000 ליטר מים בגזעיהם האדירים."},
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"Tropical rainforests cover ~6% of Earth's surface but contain over 50% of known plant and animal species.",
+ h:"יערות גשם טרופיים מכסים כ-6% משטח כדור הארץ אך מכילים מעל 50% ממיני הצמחים והבעלי-חיים המוכרים."},
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"Jellyfish are ~95% water and have no brain, heart, lungs, or bones — yet they have existed for about 500 million years.",
+ h:"מדוזות הן כ-95% מים, ללא מוח, לב, ריאות או עצמות — ובכל זאת הן קיימות כ-500 מיליון שנה."},
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"Fungi are genetically closer to animals than to plants — they form their own kingdom and include some of Earth's largest organisms.",
+ h:"פטריות קרובות גנטית יותר לבעלי-חיים מאשר לצמחים — הן ממלכה נפרדת וכוללות כמה מהיצורים הגדולים ביותר בכדור הארץ."},
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"The whale shark grows up to 18 metres long yet feeds by filtering tiny plankton — the ocean's biggest fish with the smallest prey.",
+ h:"כריש הלוויתן מגיע לאורך של עד 18 מטר אך ניזון מסינון פלנקטון קטנטן — הדג הגדול ביותר באוקיינוס ועם הטרף הקטן ביותר."},
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"The snow leopard cannot roar. Its hyoid bone is too flexible, so instead it makes a soft 'chuffing' sound.",
+ h:"הנמר השלג אינו מסוגל לשאוג. עצם ההיפרואיד שלו גמישה מדי, ולכן הוא מפיק קול 'נחרה' רך במקום."},
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"Trees in a forest share nutrients and chemical signals through an underground fungal network — the 'Wood Wide Web'.",
+ h:"עצים ביער חולקים חומרים מזינים ואותות כימיים דרך רשת פטריות תת-קרקעית — ה'רשת הרחבה של היער'."},
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"The Arctic tern migrates about 70,000 km per year — the longest annual migration of any known animal.",
+ h:"הסטרנה הארקטית נודדת כ-70,000 ק\"מ בשנה — הנדידה השנתית הארוכה ביותר של כל בעל-חיים מוכר."},
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"Spider silk is, gram for gram, about five times stronger than steel and three times tougher than Kevlar.",
+ h:"קורי עכביש הם, גרם לגרם, כ-5 פעמים חזקים מפלדה ופי 3 עמידים מקבלר."},
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"The male octopus dies shortly after mating; the female guards her eggs without eating for months until they hatch.",
+ h:"התמנון הזכר מת זמן קצר לאחר ההזדווגות; הנקבה שומרת על הביצים מבלי לאכול במשך חודשים עד שהן בוקעות."},
+{c:"Nature",s:"Nature",e:"🌿",
+ t:"Hexagonal honeycomb cells are the most material-efficient shape — maximising storage area with the minimum amount of wax.",
+ h:"תאים שישה-צלעיים בכוורת הם הצורה היעילה ביותר מבחינת חומרים — ממקסמים שטח אחסון עם כמות מינימלית של שעווה."},
+// Human Body
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"The heart beats ~100,000 times a day, pumping about 7,570 litres of blood. Over a lifetime that's around 3 billion beats.",
+ h:"הלב פועם כ-100,000 פעמים ביום ומשאב כ-7,570 ליטר דם. לאורך חיים זה כ-3 מיליארד פעימות."},
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"The brain has ~86 billion neurons and 100 trillion synaptic connections — more connections than stars in the observable universe.",
+ h:"למוח יש כ-86 מיליארד נוירונים ו-100 טריליון חיבורים סינפטיים — יותר חיבורים מכוכבים ביקום הנצפה."},
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"Skin is the body's largest organ — in adults it covers ~1.8 m², weighs ~5 kg, and fully renews itself every 2–4 weeks.",
+ h:"העור הוא האיבר הגדול ביותר — אצל מבוגרים הוא מכסה כ-1.8 מ\"ר, שוקל כ-5 ק\"ג, ומתחדש לחלוטין כל 2–4 שבועות."},
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"The body contains ~37 trillion cells. About 330 billion are replaced every day — mainly red blood cells and skin cells.",
+ h:"הגוף מכיל כ-37 טריליון תאים. כ-330 מיליארד מוחלפים מדי יום — בעיקר תאי דם אדומים ותאי עור."},
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"All the blood vessels in one adult body, laid end to end, would stretch ~100,000 km — 2.5 times around the Earth.",
+ h:"כל כלי הדם בגוף בוגר, אם נניח אחד ליד השני, יגיעו לכ-100,000 ק\"מ — פי 2.5 היקף כדור הארץ."},
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"Babies are born with 270–300 bones; adults have 206. The difference occurs as small bones fuse together during development.",
+ h:"תינוקות נולדים עם 270–300 עצמות; למבוגרים יש 206. ההבדל נוצר כשעצמות קטנות מתמזגות במהלך ההתפתחות."},
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"The liver performs over 500 functions: producing bile, detoxifying blood, storing glycogen, and synthesising plasma proteins.",
+ h:"הכבד מבצע מעל 500 תפקודים: ייצור מרה, ניקוי רעלים מהדם, אחסון גליקוגן וסינתזת חלבוני פלסמה."},
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"Unfolded, human lungs would cover ~70 m² — about the floor area of a small apartment — thanks to their intricate alveolar structure.",
+ h:"אם נפרוש את ריאות האדם, הן יכסו כ-70 מ\"ר — בערך שטח דירה קטנה — הודות למבנה האלוואולי המסועף."},
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"About 60% of the human body is water. The brain is 75% water, and even bones contain ~22% water by weight.",
+ h:"כ-60% מגוף האדם הם מים. המוח מורכב מ-75% מים, ואפילו עצמות מכילות כ-22% מים לפי משקל."},
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"Red blood cells are produced at ~2 million per second inside bone marrow — they live for about 120 days.",
+ h:"תאי דם אדומים מיוצרים בקצב של כ-2 מיליון לשנייה בתוך מח העצם — הם חיים כ-120 יום."},
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"Tooth enamel is the hardest substance in the body — harder than bone — but cannot regenerate once worn away.",
+ h:"אמייל השיניים הוא החומר הקשה ביותר בגוף — קשה יותר מעצם — אך אינו יכול לצמוח מחדש לאחר שנשחק."},
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"The cornea is the body's only tissue with no blood supply — it gets oxygen directly from air and from tears.",
+ h:"הקרנית היא הרקמה היחידה בגוף ללא אספקת דם — היא מקבלת חמצן ישירות מהאוויר ומהדמעות."},
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"About 8% of the human genome is ancient viral DNA that integrated into our ancestors' chromosomes millions of years ago.",
+ h:"כ-8% מהגנום האנושי הוא DNA וירוסי עתיק שהשתלב בכרומוזומים של אבות אבותינו לפני מיליוני שנים."},
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"Hair cells in the inner ear do not regenerate — noise-induced hearing loss is permanent and cannot be reversed.",
+ h:"תאי שיער באוזן הפנימית אינם מתחדשים — אובדן שמיעה מרעש הוא קבוע ולא ניתן לביטול."},
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"During deep sleep, the brain flushes metabolic waste through the glymphatic system — a process linked to lower Alzheimer's risk.",
+ h:"בשינה עמוקה, המוח מנקה פסולת מטבולית דרך המערכת הגלימפתית — תהליך הקשור לסיכון מופחת לאלצהיימר."},
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"Protein-coding genes are less than 2% of the human genome. The rest includes regulatory sequences and non-coding RNA.",
+ h:"גנים המקודדים חלבונים הם פחות מ-2% מהגנום האנושי. השאר כולל רצפים רגולטוריים ו-RNA לא-מקודד."},
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"The DNA in a single cell, if fully stretched, would be about 2 metres long — yet it fits inside a nucleus just 6 micrometres wide.",
+ h:"ה-DNA בתא בודד, אם נפרוש אותו לחלוטין, יהיה כ-2 מטר — ובכל זאת נכנס לגרעין ברוחב 6 מיקרומטר."},
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"The body produces 1–1.5 litres of saliva per day. Digestive enzymes in saliva begin breaking down starches before food reaches the stomach.",
+ h:"הגוף מייצר 1–1.5 ליטר רוק ביום. אנזימים עיכוליים ברוק מתחילים לפרק עמילנים לפני שהמזון מגיע לקיבה."},
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"Neurons are among the body's longest-lived cells — some accompany you from birth to death without dividing or being replaced.",
+ h:"נוירונים הם מבין תאי הגוף ארוכי-החיים ביותר — חלקם מלווים אותך מלידה ועד מוות מבלי להתחלק או להיות מוחלפים."},
+{c:"Human Body",s:"HumanBody",e:"🫀",
+ t:"The human nose can distinguish up to one trillion different odours — far more than the 10,000 previously assumed.",
+ h:"האף האנושי יכול להבחין בעד טריליון ריחות שונים — הרבה יותר מ-10,000 שהניחו בעבר."},
+// Space
+{c:"Space",s:"Space",e:"🌌",
+ t:"The Sun accounts for 99.86% of the solar system's total mass. All planets, moons, and asteroids make up just 0.14%.",
+ h:"השמש מהווה 99.86% מהמסה הכוללת של מערכת השמש. כל הכוכבי-לכת, הירחים והאסטרואידים מהווים יחד רק 0.14%."},
+{c:"Space",s:"Space",e:"🌌",
+ t:"Sunlight takes ~8 minutes 20 seconds to reach Earth. Light from the nearest star (Proxima Centauri) takes 4.2 years.",
+ h:"אור השמש לוקח כ-8 דקות ו-20 שניות להגיע לכדור הארץ. אור מהכוכב הקרוב ביותר (פרוקסימה קנטאורי) לוקח 4.2 שנים."},
+{c:"Space",s:"Space",e:"🌌",
+ t:"Venus rotates backwards and so slowly that one Venusian day is longer than one Venusian year.",
+ h:"נוגה מסתובב בכיוון הפוך ולאט כל כך שיום אחד על נוגה ארוך יותר משנה אחת על נוגה."},
+{c:"Space",s:"Space",e:"🌌",
+ t:"Neutron stars are so dense that a teaspoon of their material would weigh about a billion tonnes on Earth.",
+ h:"כוכבי נוטרון כה צפופים שכפית מחומרם תשקול כמיליארד טונות על כדור הארץ."},
+{c:"Space",s:"Space",e:"🌌",
+ t:"The Moon drifts away from Earth at about 3.8 cm per year due to tidal interactions between the two bodies.",
+ h:"הירח מתרחק מכדור הארץ בכ-3.8 ס\"מ בשנה בשל אינטראקציות גאות בין שני הגופים."},
+{c:"Space",s:"Space",e:"🌌",
+ t:"Saturn is less dense than water — if you could find an ocean large enough, Saturn would float in it.",
+ h:"שבתאי פחות צפוף ממים — אם היה קיים אוקיינוס גדול מספיק, שבתאי היה צף בו."},
+{c:"Space",s:"Space",e:"🌌",
+ t:"The observable universe contains an estimated 10²⁴ stars — more than all grains of sand on every beach on Earth.",
+ h:"היקום הנצפה מכיל כ-10²⁴ כוכבים — יותר מכל גרגרי החול על כל חופי כדור הארץ."},
+{c:"Space",s:"Space",e:"🌌",
+ t:"The International Space Station orbits Earth ~15.5 times per day at roughly 27,600 km/h.",
+ h:"תחנת החלל הבינלאומית מקיפה את כדור הארץ כ-15.5 פעמים ביום במהירות של כ-27,600 קמ\"ש."},
+{c:"Space",s:"Space",e:"🌌",
+ t:"Dark energy and dark matter together make up ~95% of the universe. All visible matter is only about 5%.",
+ h:"אנרגיה אפלה ועניין אפל מהווים יחד כ-95% מהיקום. כל החומר הנראה הוא רק כ-5%."},
+{c:"Space",s:"Space",e:"🌌",
+ t:"The Orion Nebula, 1,344 light-years away, is one of the most active star-forming regions in the Milky Way.",
+ h:"נבולת האוריון, במרחק 1,344 שנות-אור, היא אחת מאזורי היצירת-כוכבים הפעילים ביותר בשביל החלב."},
+{c:"Space",s:"Space",e:"🌌",
+ t:"Jupiter has over 95 known moons. Its largest, Ganymede, is bigger than the planet Mercury.",
+ h:"לצדק יש מעל 95 ירחים ידועים. הגדול שבהם, גנימד, גדול יותר מכוכב-הלכת חמה."},
+{c:"Space",s:"Space",e:"🌌",
+ t:"The Big Bang was not an explosion of matter into empty space — it was the expansion of space itself, ~13.8 billion years ago.",
+ h:"הביג-בנג לא היה פיצוץ של חומר לתוך חלל ריק — הוא היה התפשטות המרחב עצמו, לפני כ-13.8 מיליארד שנה."},
+{c:"Space",s:"Space",e:"🌌",
+ t:"Gravitational waves were first detected in 2015 — generated by two black holes merging 1.3 billion years ago.",
+ h:"גלי כבידה התגלו לראשונה ב-2015 — נוצרו משני חורים שחורים שהתמזגו לפני 1.3 מיליארד שנה."},
+{c:"Space",s:"Space",e:"🌌",
+ t:"Olympus Mons on Mars is the solar system's tallest volcano at 22 km — 2.5× the height of Mount Everest.",
+ h:"אולימפוס מונס על מאדים הוא הר הגעש הגבוה ביותר במערכת השמש בגובה 22 ק\"מ — פי 2.5 מגובה האוורסט."},
+{c:"Space",s:"Space",e:"🌌",
+ t:"Uranus rotates on its side — its axial tilt is ~98°, likely caused by a massive ancient collision.",
+ h:"אורנוס מסתובב על צידו — נטיית ציר הסיבוב שלו היא כ-98°, ככל הנראה בשל התנגשות עתיקה ומסיבית."},
+{c:"Space",s:"Space",e:"🌌",
+ t:"The cosmic microwave background is the 'afterglow' of the Big Bang, still detectable as faint microwaves from every direction.",
+ h:"קרינת הרקע הקוסמי היא 'הזוהר' של הביג-בנג, עדיין ניתנת לאיתור כמיקרוגלים חלשים מכל כיוון."},
+{c:"Space",s:"Space",e:"🌌",
+ t:"Voyager 1, launched in 1977, entered interstellar space in 2012 and is now over 24 billion km from Earth.",
+ h:"וויאג'ר 1, שוגר ב-1977, נכנס למרחב הבין-כוכבי ב-2012 ונמצא כיום במרחק של מעל 24 מיליארד ק\"מ מכדור הארץ."},
+{c:"Space",s:"Space",e:"🌌",
+ t:"Cosmic rays — high-energy particles from outer space — pass through your body at millions per second right now.",
+ h:"קרני-קוסמוס — חלקיקים בעלי אנרגיה גבוהה מהחלל החיצון — עוברים דרך גופך במיליונים לשנייה ממש עכשיו."},
+{c:"Space",s:"Space",e:"🌌",
+ t:"Every second, the Sun fuses ~600 million tonnes of hydrogen into helium, releasing the energy that lights our solar system.",
+ h:"מדי שנייה, השמש ממזגת כ-600 מיליון טון מימן להליום, ומשחררת את האנרגיה שמאירה את מערכת השמש."},
+// Geography
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"Antarctica holds ~60% of the world's fresh water, all locked in its ice sheet.",
+ h:"אנטארקטיקה מחזיקה כ-60% ממי השתייה של העולם, כולם כלואים בלוח הקרח שלה."},
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"The Dead Sea, 430 m below sea level, is Earth's lowest point. Its salinity is ~10× that of a typical ocean.",
+ h:"ים המלח, 430 מ' מתחת לפני הים, הוא הנקודה הנמוכה ביותר בכדור הארץ. מלחיותו כ-10 פעמים מזו של אוקיינוס טיפוסי."},
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"The Pacific Ocean is larger than all of Earth's landmasses combined. Its deepest point, Mariana Trench, is 11,034 m deep.",
+ h:"האוקיינוס השקט גדול מכל שטחי היבשה של כדור הארץ גם יחד. הנקודה העמוקה ביותר שלו, שוחת מריאנה, היא 11,034 מ' עמוק."},
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"The Amazon River carries ~20% of all fresh water flowing into the world's oceans. Its mouth can be 80 km wide in the wet season.",
+ h:"נהר האמזון נושא כ-20% מכלל מי השתייה הזורמים לאוקיינוסים. פי השפך שלו יכול להיות רחב 80 ק\"מ בעונת הגשמים."},
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"Canada has the world's longest coastline — over 202,000 km including its Arctic islands.",
+ h:"לקנדה יש קו החוף הארוך ביותר בעולם — מעל 202,000 ק\"מ כולל איי הארקטי שלה."},
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"Mount Everest grows ~4 mm per year as the Indian plate continues pushing into the Eurasian plate — confirmed by GPS.",
+ h:"הר אוורסט גדל כ-4 מ\"מ בשנה כשהלוח ההודי ממשיך לדחוף אל תוך הלוח האירואסיאתי — אושר על ידי GPS."},
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"The Sahara is larger than the continental US. Only ~25% is sand — the rest is rock and gravel.",
+ h:"הסהרה גדולה יותר מארה\"ב היבשתית. רק כ-25% ממנה חול — השאר הוא סלע וחצץ."},
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"Indonesia spans more than 17,000 islands, of which ~6,000 are inhabited — stretching the width of the continental USA.",
+ h:"אינדונזיה משתרעת על מעל 17,000 איים, מהם כ-6,000 מיושבים — בפרישה ברוחב ארה\"ב היבשתית."},
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"Australia is the flattest continent on average — its mean elevation is just 330 m above sea level.",
+ h:"אוסטרליה היא היבשת השטוחה ביותר בממוצע — גובה הממוצע שלה הוא רק 330 מ' מעל פני הים."},
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"The Sea of Galilee (Lake Kinneret) is the world's lowest freshwater lake at 209 m below sea level.",
+ h:"ים כנרת (ים הגליל) הוא ימת המים המתוקים הנמוכה ביותר בעולם ב-209 מ' מתחת לפני הים."},
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"The land point farthest from any ocean is in Xinjiang, China — about 2,645 km from the nearest coast.",
+ h:"הנקודה הרחוקה ביותר מכל ים ביבשה נמצאת בשינג'יאנג, סין — כ-2,645 ק\"מ מהחוף הקרוב ביותר."},
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"Russia spans 11 time zones and covers 17.1 million km² — the world's largest country by area.",
+ h:"רוסיה משתרעת על 11 אזורי זמן ומכסה 17.1 מיליון קמ\"ר — המדינה הגדולה ביותר בעולם לפי שטח."},
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"New Zealand was one of the last habitable lands to be settled — Polynesian voyagers arrived only about 700 years before Europeans.",
+ h:"ניו זילנד הייתה אחת האדמות הניתנות לאכלוס האחרונות שהיו מיושבות — מלחי פולינזיה הגיעו רק כ-700 שנה לפני האירופאים."},
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"Iceland sits on the mid-Atlantic ridge where two tectonic plates separate at ~2.5 cm per year.",
+ h:"איסלנד יושבת על רכס אמצע-האטלנטי שם שני לוחות טקטוניים מתרחקים בכ-2.5 ס\"מ בשנה."},
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"Vatican City, at 0.44 km², is the world's smallest sovereign state — smaller than most city parks.",
+ h:"עיר הוותיקן, בשטח 0.44 קמ\"ר, היא המדינה הריבונית הקטנה ביותר בעולם — קטנה יותר מרוב פארקים עירוניים."},
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"The Nile (6,650 km) and Amazon (6,400 km) compete for the title of world's longest river — the debate depends on where each begins.",
+ h:"הנילוס (6,650 ק\"מ) והאמזון (6,400 ק\"מ) מתחרים על תואר הנהר הארוך ביותר בעולם — המחלוקת תלויה בהגדרת נקודת ההתחלה."},
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"Papua New Guinea contains over 800 distinct languages — nearly a third of all languages on Earth.",
+ h:"פפואה גינאה החדשה מכילה מעל 800 שפות שונות — כמעט שליש מכל שפות כדור הארץ."},
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"The Caspian Sea is the world's largest lake at 371,000 km² — larger than the whole country of Germany.",
+ h:"הים הכספי הוא האגם הגדול ביותר בעולם ב-371,000 קמ\"ר — גדול יותר מכל גרמניה."},
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"Cape Horn is notorious for violent storms generated by the 'Roaring Forties' and 'Furious Fifties' wind belts.",
+ h:"קייפ הורן נודע בסופות אלימות שנוצרות על ידי רצועות הרוח 'הארבעים הסוערים' ו'החמישים הזועמים'."},
+{c:"Geography",s:"Geography",e:"🌍",
+ t:"The Amazon Basin produces ~20% of the world's oxygen through photosynthesis — earning it the title 'lungs of the Earth'.",
+ h:"אגן האמזון מייצר כ-20% מחמצן העולם דרך פוטוסינתזה — מה שמקנה לו את הכינוי 'ריאות כדור הארץ'."},
+// Mathematics
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"π is irrational and transcendental — its decimal expansion never ends or repeats, and it cannot be the root of any polynomial.",
+ h:"π הוא אי-רציונלי וטרנסצנדנטי — ההתפתחות העשרונית שלו לעולם לא מסתיימת ולא חוזרת, ואינו יכול להיות שורש של אף פולינום."},
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"0.999… is exactly equal to 1 — not an approximation, but two different representations of the same number.",
+ h:"0.999… שווה בדיוק ל-1 — לא קירוב, אלא שני ייצוגים שונים של אותו המספר."},
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"Fermat's Last Theorem (1637) was not proven until Andrew Wiles solved it in 1995 — 358 years after Fermat wrote it.",
+ h:"משפט פרמה האחרון (1637) לא הוכח עד שאנדרו ויילס פתר אותו ב-1995 — 358 שנה לאחר שפרמה כתב אותו."},
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"Some infinities are larger than others. Cantor proved the real numbers cannot be matched one-to-one with the natural numbers.",
+ h:"יש אינסופים גדולים מאחרים. קנטור הוכיח שאי-אפשר להתאים אחד-לאחד את המספרים הממשיים עם המספרים הטבעיים."},
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"In any group of 23 people, the probability that two share a birthday exceeds 50% — the Birthday Paradox.",
+ h:"בכל קבוצה של 23 אנשים, ההסתברות ששניים חולקים יום הולדת עולה על 50% — פרדוקס יום ההולדת."},
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"Euler's identity e^(iπ) + 1 = 0 links five fundamental constants in one equation — often called the most beautiful formula in maths.",
+ h:"זהות אוילר e^(iπ)+1=0 מקשרת חמישה קבועים יסודיים במשוואה אחת — לרוב מכונה הנוסחה היפה ביותר במתמטיקה."},
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"Fibonacci numbers appear throughout nature — in flower petals, pinecone spirals, and sunflower seeds — all linked to the golden ratio.",
+ h:"מספרי פיבונאצ'י מופיעים בכל הטבע — בעלי כותרת, בספירלות קונוסים ובגרעיני חמנייה — כולם קשורים ליחס הזהב."},
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"The Seven Bridges of Königsberg problem, solved by Euler in 1736, founded graph theory.",
+ h:"בעיית שבעת הגשרים של קניגסברג, שנפתרה על ידי אוילר ב-1736, ייסדה את תורת הגרפים."},
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"The Four Colour Theorem — any flat map can be coloured using just 4 colours — was proven in 1976 with computer assistance.",
+ h:"משפט ארבעת הצבעים — כל מפה שטוחה יכולה להיות צבועה ב-4 צבעים בלבד — הוכח ב-1976 בעזרת מחשב."},
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"A googol is 10¹⁰⁰. A googolplex is 10^(googol) — so vast it could not be written out if every particle were a digit.",
+ h:"גוגול הוא 10¹⁰⁰. גוגולפלקס הוא 10 בחזקת גוגול — כל כך עצום שלא ניתן לכתוב אותו אפילו אם כל חלקיק היה ספרה."},
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"There are infinitely many prime numbers — Euclid's proof is elegant: assume a finite list, and a contradiction immediately arises.",
+ h:"יש אינסוף מספרים ראשוניים — הוכחתו של אוקלידס אלגנטית: נניח רשימה סופית, וסתירה מתעוררת מיד."},
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"Benford's Law: in many natural datasets, 1 is the leading digit ~30% of the time. It is used to detect financial fraud.",
+ h:"חוק בנפורד: בנתונים טבעיים רבים, 1 היא הספרה הראשונה בכ-30% מהמקרים. הוא משמש לאיתור הונאה פיננסית."},
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"e (≈ 2.71828) is the unique base where the derivative of bˣ equals itself — making it indispensable in calculus.",
+ h:"e (≈ 2.71828) הוא הבסיס הייחודי שבו הנגזרת של bˣ שווה לעצמה — מה שהופך אותו לבלתי-נחלף בחשבון אינפינטסימלי."},
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"The Banach–Tarski paradox proves a sphere can be decomposed into pieces and reassembled into two identical spheres.",
+ h:"הפרדוקס של בנאך-טארסקי מוכיח שניתן לפרק כדור לחלקים ולהרכיב אותם לשני כדורים זהים."},
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"Goldbach's Conjecture (1742): every even integer greater than 2 is the sum of two primes — still unproven.",
+ h:"השערת גולדבאך (1742): כל מספר זוגי גדול מ-2 הוא סכום של שני מספרים ראשוניים — עדיין לא הוכחה."},
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"A Klein bottle is a one-sided surface with no inside or outside — it can only exist without self-intersection in 4D space.",
+ h:"בקבוק קליין הוא משטח חד-צדדי ללא פנים וחוץ — הוא יכול להתקיים ללא חיתוך עצמי רק במרחב ב-4 ממדים."},
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"The Law of Large Numbers: as a sample grows, its average converges to the true population mean — the backbone of statistics.",
+ h:"חוק המספרים הגדולים: ככל שמדגם גדל, הממוצע שלו מתקרב לממוצע האוכלוסייה האמיתי — עמוד השדרה של הסטטיסטיקה."},
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"Gödel's incompleteness theorems (1931): any consistent system powerful enough to describe arithmetic contains true but unprovable statements.",
+ h:"משפטי אי-השלמות של גדל (1931): כל מערכת עקבית חזקה מספיק לתאר חשבון מכילה אמרות נכונות אך בלתי-ניתנות להוכחה."},
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"The Monty Hall Problem: switching doors after one is revealed gives a 2/3 chance of winning — not 50/50 as most people assume.",
+ h:"בעיית מונטי הול: החלפת דלת לאחר חשיפה של אחת נותנת סיכוי של 2/3 לזכות — לא 50/50 כפי שרוב האנשים מניחים."},
+{c:"Mathematics",s:"Mathematics",e:"📐",
+ t:"A fractal is a shape where any magnified portion looks similar to the whole — the Mandelbrot set has infinite complexity from a simple equation.",
+ h:"פרקטל הוא צורה שכל חלק מוגדל ממנה דומה לשלמות — לקבוצת מנדלברוט יש מורכבות אינסופית ממשוואה פשוטה."},
+// Psychology
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"The Dunning–Kruger effect: people with limited knowledge overestimate their competence; experts often underestimate theirs.",
+ h:"אפקט דנינג-קרוגר: אנשים עם ידע מוגבל מעריכים יתר את כשירותם; מומחים לעיתים מעריכים אותה בחסר."},
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"Human memory is not a recording — every time you recall it, you partly reconstruct it and can alter details.",
+ h:"זיכרון האדם אינו הקלטה — בכל פעם שאתה נזכר, אתה בחלקו בונה אותו מחדש ויכול לשנות פרטים."},
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"Milgram (1961): 65% of participants kept delivering shocks when ordered to — a landmark study of obedience to authority.",
+ h:"מילגרם (1961): 65% מהמשתתפים המשיכו להעביר זעזועים כשנצטוו לכך — מחקר מכונן בציות לסמכות."},
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"The Mere Exposure Effect: people tend to prefer things they've encountered before, even without consciously remembering the exposure.",
+ h:"אפקט החשיפה הפשוטה: אנשים נוטים להעדיף דברים שנחשפו אליהם בעבר, גם ללא זכירה מודעת של החשיפה."},
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"Sleep is critical for memory — even one night of poor sleep can impair next-day recall by up to 40%.",
+ h:"שינה קריטית לזיכרון — אפילו לילה אחד של שינה גרועה יכול לפגוע בזכירה של למחרת בעד 40%."},
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"The Serial Position Effect: the first and last items on a list are recalled best — primacy and recency effects.",
+ h:"אפקט המיקום הטורי: הפריטים הראשון והאחרון ברשימה נזכרים בצורה הטובה ביותר — אפקטי הראשוניות והטריות."},
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"Stanford Prison Experiment (1971): halted after 6 days when participants dangerously adopted their guard/prisoner roles.",
+ h:"ניסוי הכלא של סטנפורד (1971): הופסק לאחר 6 ימים כשמשתתפים אימצו בצורה מסוכנת את תפקידי השומר/האסיר שלהם."},
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"Flow state (Csikszentmihalyi): deep focus and satisfaction occur when challenge perfectly matches skill level.",
+ h:"מצב זרימה (צ'יקסנטמיהאי): ריכוז ושביעות-רצון עמוקים מתרחשים כשהאתגר מתאים בצורה מושלמת לרמת המיומנות."},
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"Bandura's Bobo doll study (1961) showed children imitate adult aggression — a founding study in social learning theory.",
+ h:"מחקר בובת בובו של בנדורה (1961) הראה שילדים מחקים תוקפנות של מבוגרים — מחקר מכונן בתורת הלמידה החברתית."},
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"Paradox of Choice (Schwartz, 2004): too many options reduce satisfaction, as more choices increase regret and self-blame.",
+ h:"פרדוקס הבחירה (שוורץ, 2004): יותר מדי אפשרויות מפחיתות שביעות-רצון, כשיותר בחירות מגבירות חרטה ואשמה עצמית."},
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"Newborns recognise faces within hours of birth — they gaze at face-like patterns longer than at other objects.",
+ h:"יילודים מזהים פנים בתוך שעות מהלידה — הם מביטים בדפוסים דמויי-פנים זמן ארוך יותר מאשר באובייקטים אחרים."},
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"The Priming Effect: seeing 'doctor' speeds up recognition of 'nurse' — exposure to one stimulus influences the next.",
+ h:"אפקט ה-Priming: ראיית 'רופא' מאיצה זיהוי של 'אחות' — חשיפה לגירוי אחד משפיעה על הגירוי הבא."},
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"The Peak-End Rule: experiences are judged by how they felt at their most intense moment and at the end — not on average.",
+ h:"כלל השיא-סיום: חוויות נשפטות לפי איך שהרגישו ברגע הכי אינטנסיבי ובסוף — לא בממוצע."},
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"Confirmation Bias: people seek and favour information that confirms their existing beliefs, discounting contradictory evidence.",
+ h:"הטיית האישוש: אנשים מחפשים ומעדיפים מידע שמאשר את אמונותיהם הקיימות, ומתעלמים מעדויות סותרות."},
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"The Yerkes–Dodson Law: both very low and very high arousal impair performance — optimal performance requires moderate stress.",
+ h:"חוק יֶרקס-דודסון: עוררות נמוכה מאוד וגבוהה מאוד כאחת פוגמות בביצועים — ביצועים מיטביים דורשים לחץ מתון."},
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"False memories can be fully fabricated. Elizabeth Loftus showed it's possible to implant vivid memories of events that never happened.",
+ h:"זיכרונות שקר יכולים להיות מיוצרים לחלוטין. אליזבת לופטוס הראתה שניתן להשתיל זיכרונות חיים של אירועים שמעולם לא קרו."},
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"Bystander Effect: the more people who witness an emergency, the less likely any individual is to help.",
+ h:"אפקט הצופה: ככל שיותר אנשים עדים לחירום, כך פחות סביר שאיש ייזום לעזור."},
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"Ebbinghaus Forgetting Curve (1885): people forget ~50% of new information within an hour and ~90% within a week without review.",
+ h:"עקומת השכחה של אבינגהאוס (1885): אנשים שוכחים כ-50% ממידע חדש תוך שעה וכ-90% תוך שבוע ללא חזרה."},
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"Spaced Repetition is the most effective method for long-term memory — reviewing material at growing intervals beats cramming.",
+ h:"חזרה מרווחת היא השיטה היעילה ביותר לזיכרון לטווח ארוך — חזרה על חומר במרווחים גדלים עדיפה על שינון אינטנסיבי."},
+{c:"Psychology",s:"Psychology",e:"🧠",
+ t:"Framing Effect: '95% survival rate' feels safer than '5% mortality rate' even though both describe the exact same outcome.",
+ h:"אפקט המסגרת: 'שיעור שרידות 95%' מרגיש בטוח יותר מ'שיעור תמותה 5%' למרות ששניהם מתארים בדיוק את אותו תוצאה."},
+// Technology
+{c:"Technology",s:"Technology",e:"💻",
+ t:"The Internet and the World Wide Web are different: the Internet is the infrastructure; the Web is a service running on top of it.",
+ h:"האינטרנט והרשת העולמית (WWW) הם שונים: האינטרנט הוא התשתית; הרשת היא שירות שרץ עליה."},
+{c:"Technology",s:"Technology",e:"💻",
+ t:"GPS relies on Einstein's relativity corrections. Without them, GPS would accumulate 10 km of positional error per day.",
+ h:"GPS מסתמך על תיקוני יחסות של איינשטיין. ללא אותם תיקונים, GPS היה מצטבר לשגיאת מיקום של 10 ק\"מ ביום."},
+{c:"Technology",s:"Technology",e:"💻",
+ t:"The QR code was invented in 1994 by Denso Wave in Japan — originally designed to track car parts on assembly lines.",
+ h:"קוד QR הומצא ב-1994 על ידי Denso Wave ביפן — בתחילה תוכנן לעקוב אחר חלקי מכוניות בפסי ייצור."},
+{c:"Technology",s:"Technology",e:"💻",
+ t:"Google's PageRank algorithm (1996) ranks pages by the quantity and quality of links pointing to them.",
+ h:"אלגוריתם PageRank של גוגל (1996) מדרג דפים לפי כמות ואיכות הקישורים המצביעים אליהם."},
+{c:"Technology",s:"Technology",e:"💻",
+ t:"CRISPR-Cas9 came from a bacterial immune system. It won the Nobel Prize in Chemistry in 2020.",
+ h:"CRISPR-Cas9 מגיע ממערכת חיסונית של חיידקים. הוא זכה בפרס נובל לכימיה ב-2020."},
+{c:"Technology",s:"Technology",e:"💻",
+ t:"Lithium-ion batteries lose capacity with each charge cycle — after ~500 full cycles, capacity drops to ~80% of original.",
+ h:"סוללות ליתיום-יון מאבדות קיבולת עם כל מחזור טעינה — לאחר כ-500 מחזורים מלאים, הקיבולת יורדת לכ-80% מהמקורית."},
+{c:"Technology",s:"Technology",e:"💻",
+ t:"A single fibre-optic cable can carry hundreds of simultaneous light channels, transmitting terabytes per second.",
+ h:"כבל פייבר-אופטיק בודד יכול להעביר מאות ערוצי אור בו-זמניים, ולשדר טרה-בייטים בשנייה."},
+{c:"Technology",s:"Technology",e:"💻",
+ t:"TCP/IP, designed in 1974 by Vint Cerf and Bob Kahn, remains the foundational communication standard of the Internet.",
+ h:"TCP/IP, שתוכנן ב-1974 על ידי ויטון סרף ובוב קאן, נשאר תקן התקשורת הבסיסי של האינטרנט."},
+{c:"Technology",s:"Technology",e:"💻",
+ t:"JPEG compression (1992) removes image detail the human eye is least sensitive to, using the Discrete Cosine Transform.",
+ h:"דחיסת JPEG (1992) מסירה פרטי תמונה שהעין האנושית הכי פחות רגישה אליהם, תוך שימוש בטרנספורם קוסינוס בדידה."},
+{c:"Technology",s:"Technology",e:"💻",
+ t:"A quantum computer's qubit can be 0 and 1 simultaneously (superposition), enabling some calculations impossible for classical computers.",
+ h:"קיוביט של מחשב קוונטי יכול להיות 0 ו-1 בו-זמנית (כיפוף קוונטי), מה שמאפשר חישובים בלתי-אפשריים למחשבים קלאסיים."},
+{c:"Technology",s:"Technology",e:"💻",
+ t:"Karl Benz patented the first petrol automobile in 1885 — the Benz Patent-Motorwagen — considered the birth of the modern car.",
+ h:"קרל בנץ קיבל פטנט על מכונית הדלק הראשונה ב-1885 — Benz Patent-Motorwagen — הנחשב לידלידת המכונית המודרנית."},
+{c:"Technology",s:"Technology",e:"💻",
+ t:"The integrated circuit was independently invented in 1958 by Jack Kilby and Robert Noyce — co-founders of modern computing.",
+ h:"המעגל המשולב הומצא באופן עצמאי ב-1958 על ידי ג'ק קילבי ורוברט נויס — מייסדי המחשוב המודרני."},
+{c:"Technology",s:"Technology",e:"💻",
+ t:"USB was developed in 1994–96 by a consortium including Intel, IBM, and Microsoft to unify the chaos of connector types.",
+ h:"USB פותח ב-1994–96 על ידי קונסורציום הכולל אינטל, IBM ומיקרוסופט כדי לאחד את הכאוס של סוגי מחברים."},
+{c:"Technology",s:"Technology",e:"💻",
+ t:"The World Wide Web was proposed in 1989 by Tim Berners-Lee at CERN to share information via hypertext links.",
+ h:"הרשת העולמית (WWW) הוצעה ב-1989 על ידי טים ברנרס-לי ב-CERN כדי לשתף מידע דרך קישורי היפרטקסט."},
+{c:"Technology",s:"Technology",e:"💻",
+ t:"The first email was sent in 1971 by Ray Tomlinson, who also chose the @ symbol to separate user from host.",
+ h:"האימייל הראשון נשלח ב-1971 על ידי ריי טומלינסון, שבחר גם את הסמל @ כדי להפריד משתמש ממכונה."},
+{c:"Technology",s:"Technology",e:"💻",
+ t:"Blockchain was introduced in 2008 by 'Satoshi Nakamoto' as the basis for Bitcoin — a distributed, tamper-resistant ledger.",
+ h:"בלוקצ'יין הוצג ב-2008 על ידי 'סאטושי נקמוטו' כבסיס לביטקוין — ספר חשבונות מבוזר ועמיד בפני שיבוש."},
+{c:"Technology",s:"Technology",e:"💻",
+ t:"Speech recognition surpassed human transcription accuracy in 2017 — a landmark in artificial intelligence.",
+ h:"זיהוי דיבור עלה על דיוק תמלול אנושי ב-2017 — אבן דרך בבינה מלאכותית."},
+{c:"Technology",s:"Technology",e:"💻",
+ t:"Nuclear batteries (betavoltaics) generate electricity from radiation and can last decades — already used in some space probes.",
+ h:"סוללות גרעיניות (בטאוולטאיות) מייצרות חשמל מקרינה ויכולות להימשך עשורים — כבר משמשות בחלק מגשושיות החלל."},
+{c:"Technology",s:"Technology",e:"💻",
+ t:"The first mouse was demonstrated in 1968 by Douglas Engelbart at 'The Mother of All Demos', alongside the GUI and video conferencing.",
+ h:"העכבר הראשון הוצג ב-1968 על ידי דאגלס אנגלברט ב-'אם כל ההדגמות', לצד ממשק GUI ושיחות ועידה בוידאו."},
+{c:"Technology",s:"Technology",e:"💻",
+ t:"The first inkjet printer (HP, 1976) worked by superheating ink until a tiny bubble burst, propelling a droplet onto paper.",
+ h:"המדפסת הנוזל הראשונה (HP, 1976) פעלה על ידי חימום דיו קיצוני עד שבועית קטנה התפוצצה, דוחפת טיפה על הנייר."},
+// Economics
+{c:"Economics",s:"Economics",e:"💰",
+ t:"In Germany's 1923 hyperinflation, prices doubled every few days. People used wheelbarrows of banknotes to buy bread.",
+ h:"בהיפראינפלציה של גרמניה ב-1923, מחירים הוכפלו כל כמה ימים. אנשים השתמשו בעגלות של שטרות כדי לקנות לחם."},
+{c:"Economics",s:"Economics",e:"💰",
+ t:"The 1929 Wall Street Crash triggered the Great Depression, sending US unemployment to 25% and shrinking GDP by nearly a third.",
+ h:"התרסקות וול סטריט ב-1929 הוביל לשפל הגדול, ושלח את האבטלה בארה\"ב ל-25% ומצמק את ה-GDP בכמעט שליש."},
+{c:"Economics",s:"Economics",e:"💰",
+ t:"GDP does not measure inequality, wellbeing, leisure, or sustainability — a country can show GDP growth amid suffering.",
+ h:"GDP לא מודד אי-שוויון, רווחה, פנאי, או קיימות — מדינה יכולה להציג צמיחת GDP בתוך סבל."},
+{c:"Economics",s:"Economics",e:"💰",
+ t:"The Phillips Curve showed an inverse link between inflation and unemployment. Stagflation in the 1970s broke the model.",
+ h:"עקומת פיליפס הראתה קשר הפוך בין אינפלציה לאבטלה. הסטגפלציה בשנות ה-70 שברה את המודל."},
+{c:"Economics",s:"Economics",e:"💰",
+ t:"Gresham's Law: 'bad money drives out good'. When two currencies circulate, people hoard the more valuable one.",
+ h:"חוק גרשם: 'כסף רע מגרש כסף טוב'. כשמטבעות שני סוגים מסתובבים, אנשים אוגרים את בעל הערך הגבוה."},
+{c:"Economics",s:"Economics",e:"💰",
+ t:"The world's first central bank was Sweden's Riksbank (1668). The Bank of England (1694) became the model for modern central banking.",
+ h:"הבנק המרכזי הראשון בעולם היה Riksbank השוודי (1668). בנק אנגליה (1694) הפך למודל לבנקאות מרכזית מודרנית."},
+{c:"Economics",s:"Economics",e:"💰",
+ t:"Japan maintained near-zero interest rates almost continuously from 1995 — a unique monetary experiment in modern history.",
+ h:"יפן שמרה על ריביות קרובות לאפס כמעט ברציפות מ-1995 — ניסוי מוניטרי ייחודי בהיסטוריה המודרנית."},
+{c:"Economics",s:"Economics",e:"💰",
+ t:"Adam Smith's 'invisible hand' (1776) describes how self-interest can unintentionally promote the broader economic good.",
+ h:"'היד הבלתי נראית' של אדם סמית' (1776) מתארת כיצד אינטרס עצמי יכול לקדם ללא כוונה את הטוב הכלכלי הרחב."},
+{c:"Economics",s:"Economics",e:"💰",
+ t:"Bitcoin's supply is capped at 21 million coins by its protocol. As of 2025, ~19.7 million had already been mined.",
+ h:"היצע הביטקוין מוגבל ל-21 מיליון מטבעות על ידי הפרוטוקול שלו. נכון ל-2025, כ-19.7 מיליון כבר נכרו."},
+{c:"Economics",s:"Economics",e:"💰",
+ t:"The Rebound Effect: improving energy efficiency can paradoxically increase consumption, since cheaper running costs encourage more use.",
+ h:"אפקט הריקושה: שיפור יעילות אנרגטית יכול באופן פרדוקסלי להגדיל צריכה, שכן עלויות הפעלה זולות יותר מעודדות יותר שימוש."},
+{c:"Economics",s:"Economics",e:"💰",
+ t:"Game theory (Von Neumann & Morgenstern, 1944) studies strategic decision-making between rational agents with competing interests.",
+ h:"תורת המשחקים (פון נוימן ומורגנשטרן, 1944) חוקרת קבלת החלטות אסטרטגית בין סוכנים רציונליים עם אינטרסים מתחרים."},
+{c:"Economics",s:"Economics",e:"💰",
+ t:"The Prisoner's Dilemma shows that two rational individuals may not cooperate even when cooperation would benefit them both.",
+ h:"דילמת האסיר מראה שאנשים רציונליים עשויים שלא לשתף פעולה גם כששיתוף פעולה יועיל לשניהם."},
+{c:"Economics",s:"Economics",e:"💰",
+ t:"The IMF and World Bank were both created at Bretton Woods (1944) to stabilise the global economy after WWII.",
+ h:"קרן המטבע הבינלאומית והבנק העולמי נוצרו שניהם בברטון-וודס (1944) כדי לייצב את הכלכלה הגלובלית לאחר מלחמת העולם ה-2."},
+{c:"Economics",s:"Economics",e:"💰",
+ t:"The Veblen Effect: demand for luxury goods rises as their price rises — they are desired because they signal wealth.",
+ h:"אפקט ורבלן: הביקוש לסחורות יוקרה עולה ככל שמחירן עולה — הן מבוקשות כי הן מסמנות עושר."},
+{c:"Economics",s:"Economics",e:"💰",
+ t:"The US GDP was the first to reach $1 trillion (~1970). Today it exceeds $25 trillion.",
+ h:"ה-GDP האמריקאי היה הראשון להגיע ל-1 טריליון דולר (כ-1970). כיום הוא עולה על 25 טריליון דולר."},
+{c:"Economics",s:"Economics",e:"💰",
+ t:"Compound interest at 7% per year doubles money in about 10 years — often attributed to Einstein as the 'eighth wonder of the world'.",
+ h:"ריבית דריבית ב-7% לשנה מכפילה כסף בכ-10 שנים — לעיתים מיוחסת לאיינשטיין כ'הפלא השמיני של העולם'."},
+{c:"Economics",s:"Economics",e:"💰",
+ t:"The Laffer Curve shows tax revenue is zero at both 0% and 100% rates — implying there is an optimal rate that maximises revenue.",
+ h:"עקומת לאפר מראה שהכנסות ממס הן אפס גם בשיעורי 0% וגם 100% — מרמז שיש שיעור מיטבי שממקסם הכנסות."},
+{c:"Economics",s:"Economics",e:"💰",
+ t:"Microfinance, pioneered by Muhammad Yunus and Grameen Bank (1983), showed small loans to the poor generate reliable repayment.",
+ h:"מיקרו-פיננסים, שחלוצה אותם מוחמד יונוס ובנק גרמין (1983), הראו שהלוואות קטנות לעניים מייצרות החזר אמין."},
+{c:"Economics",s:"Economics",e:"💰",
+ t:"Rational Expectations Theory: predictable economic policy loses effectiveness over time as people adjust their behaviour to it.",
+ h:"תורת הציפיות הרציונליות: מדיניות כלכלית צפויה מאבדת יעילות עם הזמן ככל שאנשים מתאימים את התנהגותם אליה."},
+// Language
+{c:"Language",s:"Language",e:"🗣️",
+ t:"Mandarin has ~1.1 billion native speakers. English leads in non-native speakers, making it the world's most used second language.",
+ h:"למנדרינית יש כ-1.1 מיליארד דוברים ילידים. אנגלית מובילה בדוברים לא-ילידים, מה שהופך אותה לשפה השנייה הנפוצה בעולם."},
+{c:"Language",s:"Language",e:"🗣️",
+ t:"About 7,000 languages are spoken today, but just 23 of them are used by half of all people on Earth.",
+ h:"כ-7,000 שפות מדוברות כיום, אך רק 23 מהן משמשות את מחצית האנשים בכדור הארץ."},
+{c:"Language",s:"Language",e:"🗣️",
+ t:"Hebrew is the only written language successfully revived as an everyday spoken tongue after centuries as a liturgical language.",
+ h:"עברית היא השפה הכתובה היחידה שהוחייתה בהצלחה כשפה מדוברת יומיומית לאחר מאות שנים כשפה ליטורגית."},
+{c:"Language",s:"Language",e:"🗣️",
+ t:"~40% of Spanish vocabulary derives from Arabic — a legacy of 700 years of Moorish rule on the Iberian Peninsula (711–1492).",
+ h:"כ-40% ממילות הספרדית נגזרות מהערבית — מורשת 700 שנות שלטון מוסלמי בחצי האי האיברי (711–1492)."},
+{c:"Language",s:"Language",e:"🗣️",
+ t:"Icelandic has changed so little since the Middle Ages that modern speakers can read 13th-century Viking sagas with ease.",
+ h:"האיסלנדית כמעט שלא השתנתה מאז ימי הביניים; דוברים מודרניים יכולים לקרוא את הסאגות הוויקינגיות מהמאה ה-13 בקלות."},
+{c:"Language",s:"Language",e:"🗣️",
+ t:"Sign languages are not universal — nearly every country has its own independent sign language with a distinct grammar.",
+ h:"שפות הסימנים אינן אוניברסליות — כמעט לכל מדינה יש שפת הסימנים העצמאית שלה עם דקדוק שונה."},
+{c:"Language",s:"Language",e:"🗣️",
+ t:"Japanese uses three scripts simultaneously: hiragana, katakana, and kanji — all three typically appear in a single newspaper.",
+ h:"יפנית משתמשת בשלושה כתבים בו-זמנית: הירגנה, קטאקנה וקאנג'י — שלושתם מופיעים בדרך כלל בעיתון אחד."},
+{c:"Language",s:"Language",e:"🗣️",
+ t:"Finnish has 15 grammatical cases instead of prepositions, no articles, and no grammatical gender.",
+ h:"לפינית יש 15 מקרים דקדוקיים במקום מילות-יחס, אין מילות יידוע, ואין מין דקדוקי."},
+{c:"Language",s:"Language",e:"🗣️",
+ t:"'Colorless green ideas sleep furiously' (Chomsky, 1957) is grammatically perfect yet semantically nonsensical.",
+ h:"'רעיונות ירוקים חסרי-צבע ישנים בזעם' (חומסקי, 1957) הוא תחבירית מושלם אך סמנטית חסר משמעות."},
+{c:"Language",s:"Language",e:"🗣️",
+ t:"The word 'robot' comes from Czech 'robota' (forced labour) — coined in Karel Čapek's 1920 play R.U.R.",
+ h:"המילה 'רובוט' מגיעה מהצ'כית 'robota' (עמל כפייה) — נטבעה במחזה R.U.R. של קארל צ'פק ב-1920."},
+{c:"Language",s:"Language",e:"🗣️",
+ t:"Basque, spoken in the Pyrenees, is a language isolate — it has no known genetic relation to any other language on Earth.",
+ h:"הבסקית, המדוברת בפירנאים, היא שפה מבודדת — אין לה קרבה גנטית ידועה לאף שפה אחרת בכדור הארץ."},
+{c:"Language",s:"Language",e:"🗣️",
+ t:"The Phoenician alphabet (~1050 BC) was among the first to assign one symbol to one sound — all Western alphabets descend from it.",
+ h:"האלפבית הפיניקי (כ-1050 לפנה\"ס) היה מבין הראשונים שהקצה סמל אחד לצליל אחד — כל האלפביתים המערביים נגזרים ממנו."},
+{c:"Language",s:"Language",e:"🗣️",
+ t:"The Pirahã language lacks numbers, future tense, and recursive grammar — challenging Chomsky's universal grammar theory.",
+ h:"שפת הפיראהה חסרה מספרים, זמן עתיד ודקדוק רקורסיבי — מאתגרת את תיאוריית הדקדוק האוניברסלי של חומסקי."},
+{c:"Language",s:"Language",e:"🗣️",
+ t:"English borrowed more vocabulary from French than any other language — following the Norman Conquest of 1066.",
+ h:"האנגלית שאלה יותר מילים מצרפתית מכל שפה אחרת — בעקבות הכיבוש הנורמני ב-1066."},
+{c:"Language",s:"Language",e:"🗣️",
+ t:"'Quark' (the particle) was named by physicist Murray Gell-Mann in 1964, taken from James Joyce's Finnegans Wake.",
+ h:"'קוורק' (החלקיק) נקרא כך על ידי הפיזיקאי מאריי גל-מאן ב-1964, לקוח מ'פינגנס-וייק' של ג'ויס."},
+{c:"Language",s:"Language",e:"🗣️",
+ t:"ASL (American Sign Language) is a fully independent language — its grammar is closer to Japanese than to English.",
+ h:"ASL (שפת הסימנים האמריקנית) היא שפה עצמאית לחלוטין — הדקדוק שלה קרוב יותר ליפנית מלאנגלית."},
+{c:"Language",s:"Language",e:"🗣️",
+ t:"The original Latin alphabet had only 21 letters. J, U, and W were added in medieval and early modern times.",
+ h:"לאלפבית הלטיני המקורי היו רק 21 אותיות. J, U ו-W נוספו בימי הביניים ובתקופה המודרנית הקדומה."},
+{c:"Language",s:"Language",e:"🗣️",
+ t:"Esperanto (1887) was designed as an easy international language and now has an estimated 2 million speakers.",
+ h:"האספרנטו (1887) תוכנן כשפה בינלאומית קלה ויש לה כיום כ-2 מיליון דוברים מוערכים."},
+{c:"Language",s:"Language",e:"🗣️",
+ t:"The Indo-European language family includes English, Spanish, Hindi, Russian, and Persian — all descending from one ancestor ~5,000–6,000 years ago.",
+ h:"משפחת השפות ההינדו-אירופית כוללת אנגלית, ספרדית, הינדי, רוסית ופרסית — כולן צאצאות מאב משותף לפני כ-5,000–6,000 שנה."},
+{c:"Language",s:"Language",e:"🗣️",
+ t:"Some languages have no word for 'no' — they negate by modifying the verb instead of using a separate negative word.",
+ h:"לשפות מסוימות אין מילה ל'לא' — הן שוללות על ידי שינוי הפועל במקום שימוש במילת שלילה נפרדת."},
+// Music
+{c:"Music",s:"Music",e:"🎵",
+ t:"The note A4 was standardised at 440 Hz in 1939. Before that, tuning varied between ~415 and 466 Hz across regions and eras.",
+ h:"הנוטה A4 תוקנה ל-440 הרץ ב-1939. לפני כן, הכיוון השתנה בין כ-415 ל-466 הרץ בין אזורים ותקופות."},
+{c:"Music",s:"Music",e:"🎵",
+ t:"Mozart composed his first symphony at age 8 — though scholars believe his father Leopold likely helped with editing.",
+ h:"מוצרט כתב את הסימפוניה הראשונה שלו בגיל 8 — אם כי חוקרים מאמינים שאביו לאופולד כנראה עזר בעריכה."},
+{c:"Music",s:"Music",e:"🎵",
+ t:"John Cage's 4'33\" (1952) instructs the performer to play nothing — the ambient sounds of the audience become the music.",
+ h:"4'33\" של ג'ון קייג' (1952) מורה לנגן שלא לנגן דבר — הרעשים הסביבתיים של הקהל הופכים למוזיקה."},
+{c:"Music",s:"Music",e:"🎵",
+ t:"Beethoven wrote his 9th Symphony after going completely deaf — he reportedly tried to conduct its premiere himself.",
+ h:"בטהובן כתב את הסימפוניה ה-9 שלו לאחר שאיבד את שמיעתו לחלוטין — לפי הדיווחים הוא ניסה לנצח בבכורה שלה בעצמו."},
+{c:"Music",s:"Music",e:"🎵",
+ t:"A piano has over 12,000 individual parts. Treble strings are struck by three hammers; the lowest bass string by just one.",
+ h:"לפסנתר יש מעל 12,000 חלקים בודדים. מיתרי הסופרן נפגעים על ידי שלושה מחבטים; מיתר הבאס הנמוך ביותר על ידי אחד בלבד."},
+{c:"Music",s:"Music",e:"🎵",
+ t:"A violin is assembled from 70 pieces — the spruce top and maple back chosen for their different acoustic properties.",
+ h:"כינור מורכב מ-70 חלקים — גג ה-spruce וגב המייפל נבחרים בשל תכונות האקוסטיקה השונות שלהם."},
+{c:"Music",s:"Music",e:"🎵",
+ t:"Bach's Well-Tempered Clavier (1722) showed music could be played in all 24 major and minor keys — then a new idea.",
+ h:"Well-Tempered Clavier של באך (1722) הראה שמוזיקה יכולה להיות מנוגנת בכל 24 המפתחות המז'וריים והמינוריים — אז רעיון חדש."},
+{c:"Music",s:"Music",e:"🎵",
+ t:"The modern drum kit developed in 1920s New Orleans so one musician could replace multiple percussionists.",
+ h:"ערכת התופים המודרנית התפתחה בניו אורלינס של שנות ה-20 כדי שנגן אחד יוכל להחליף כמה מתופפים."},
+{c:"Music",s:"Music",e:"🎵",
+ t:"The Minimoog (1970) was the first mass-market synthesiser — it made synthesis accessible to solo musicians for the first time.",
+ h:"ה-Minimoog (1970) היה הסינתסייזר הראשון לשוק ההמוני — הוא הפך את הסינתזה נגישה לנגנים בודדים לראשונה."},
+{c:"Music",s:"Music",e:"🎵",
+ t:"The brain processes music and language in overlapping regions — music therapy aids speech recovery after strokes.",
+ h:"המוח מעבד מוזיקה ושפה באזורים חופפים — טיפול במוזיקה מסייע בהחלמת דיבור לאחר שבץ."},
+{c:"Music",s:"Music",e:"🎵",
+ t:"J. S. Bach fathered 20 children. At least four of them became notable composers in their own right.",
+ h:"ל-J. S. באך היו 20 ילדים. לפחות ארבעה מהם הפכו למלחינים בולטים בזכות עצמם."},
+{c:"Music",s:"Music",e:"🎵",
+ t:"Schubert's 'Unfinished Symphony' (1822) has only two movements. Why he never completed it remains unknown.",
+ h:"'הסימפוניה הבלתי-גמורה' של שוברט (1822) מכילה רק שתי תנועות. מדוע לא סיים אותה נשאר לא ידוע."},
+{c:"Music",s:"Music",e:"🎵",
+ t:"Jazz developed in 1890s New Orleans, blending African rhythms with European harmonics — one of the most globally influential genres.",
+ h:"הג'אז התפתח בניו אורלינס של שנות ה-1890, משלב ריתמוסים אפריקאיים עם הרמוניה אירופאית — אחד מהז'אנרים המשפיעים ביותר."},
+{c:"Music",s:"Music",e:"🎵",
+ t:"The tritone was called 'Diabolus in Musica' ('Devil in Music') in the Middle Ages and was avoided in church compositions.",
+ h:"הטריטון כונה 'Diabolus in Musica' ('שטן במוזיקה') בימי הביניים והוימנע בקומפוזיציות של הכנסייה."},
+{c:"Music",s:"Music",e:"🎵",
+ t:"Pop music clusters around 120 BPM — close to the resting human heart rate — which may partly explain why it feels natural.",
+ h:"מוזיקת פופ מתרכזת סביב 120 BPM — קרוב לקצב לב מנוחה אנושי — מה שאולי מסביר חלקית מדוע הוא מרגיש טבעי."},
+{c:"Music",s:"Music",e:"🎵",
+ t:"Stradivarius violins (17th–18th century Cremona) are still considered unmatched. The secret of their exceptional tone is debated.",
+ h:"כינורות סטרדיווריוס (קרמונה המאות ה-17–18) עדיין נחשבים ללא תחרות. סוד הצליל החריג שלהם הוא נושא לדיון."},
+{c:"Music",s:"Music",e:"🎵",
+ t:"The electric guitar was invented in 1931 to amplify Hawaiian lap steel guitar over loud big-band orchestras.",
+ h:"הגיטרה החשמלית הומצאה ב-1931 כדי להגביר גיטרת לאפ-סטיל הוואיית מעל תזמורות ביג-בנד רועשות."},
+{c:"Music",s:"Music",e:"🎵",
+ t:"Hildegard of Bingen (1098–1179) is the earliest composer with a well-documented biography — she wrote over 70 sacred songs.",
+ h:"הילדגארד מבינגן (1098–1179) היא המלחינה הקדומה ביותר עם ביוגרפיה מתועדת היטב — כתבה מעל 70 שירים קדושים."},
+{c:"Music",s:"Music",e:"🎵",
+ t:"The theremin (1920) is one of the only instruments played without physical contact — hands near two antennas control pitch and volume.",
+ h:"הטרמין (1920) הוא אחד מהכלים היחידים המנוגנים ללא מגע פיזי — ידיים ליד שתי אנטנות שולטות בגובה הצליל ובעוצמה."},
+// Sports
+{c:"Sports",s:"Sports",e:"⚽",
+ t:"The marathon distance (42.195 km) was set at the 1908 London Olympics to start beneath the nursery window at Windsor Castle.",
+ h:"מרחק המרתון (42.195 ק\"מ) נקבע באולימפיאדת לונדון 1908 כדי להתחיל מתחת לחלון חדר המשחקים בטירת וינדזור."},
+{c:"Sports",s:"Sports",e:"⚽",
+ t:"Football (soccer) is the world's most popular sport — roughly 4 billion people follow it in some form.",
+ h:"כדורגל הוא ענף הספורט הפופולרי ביותר בעולם — כ-4 מיליארד אנשים עוקבים אחריו בצורה כלשהי."},
+{c:"Sports",s:"Sports",e:"⚽",
+ t:"Michael Phelps won 23 Olympic gold medals — more than most countries have earned across their entire Olympic history.",
+ h:"מיכאל פלפס זכה ב-23 מדליות זהב אולימפיות — יותר ממה שרוב המדינות הרוויחו לאורך כל ההיסטוריה האולימפית שלהן."},
+{c:"Sports",s:"Sports",e:"⚽",
+ t:"A table-tennis ball can reach 112 km/h after a hard smash. At just 40 mm wide, it's one of the fastest sports by scale.",
+ h:"כדור טניס שולחן יכול להגיע ל-112 קמ\"ש לאחר סמאש חזק. ברוחב 40 מ\"מ בלבד, הוא אחד הספורטים המהירים ביותר לפי גודל."},
+{c:"Sports",s:"Sports",e:"⚽",
+ t:"The first modern Olympics (Athens, 1896) featured 14 nations and 241 athletes — all of whom were male.",
+ h:"האולימפיאדה המודרנית הראשונה (אתונה, 1896) כללה 14 מדינות ו-241 ספורטאים — כולם גברים."},
+{c:"Sports",s:"Sports",e:"⚽",
+ t:"A golf hole-in-one has a ~1 in 12,500 probability for an amateur — about 1 in 2,500 for a professional.",
+ h:"הסתברות הול-אין-וואן בגולף היא כ-1 מ-12,500 עבור חובב — כ-1 מ-2,500 עבור מקצוען."},
+{c:"Sports",s:"Sports",e:"⚽",
+ t:"Wimbledon (1877) is the oldest Grand Slam tournament and the only one requiring players to wear predominantly white.",
+ h:"וימבלדון (1877) הוא הגרנד-סלאם הוותיק ביותר והיחיד המחייב שחקנים ללבוש לבן בעיקר."},
+{c:"Sports",s:"Sports",e:"⚽",
+ t:"The Tour de France spans ~3,500 km over 21 stages. Cyclists burn ~8,000 calories per day — four times the average adult.",
+ h:"טור דה פראנס משתרע על כ-3,500 ק\"מ בפני 21 שלבים. רוכבים שורפים כ-8,000 קלוריות ביום — פי ארבעה מהממוצע למבוגר."},
+{c:"Sports",s:"Sports",e:"⚽",
+ t:"In the board game Go, the number of possible board positions (2×10¹⁷⁰) exceeds the number of atoms in the observable universe.",
+ h:"במשחק הלוח גו, מספר מצבי הלוח האפשריים (2×10¹⁷⁰) עולה על מספר האטומים ביקום הנצפה."},
+{c:"Sports",s:"Sports",e:"⚽",
+ t:"Judo ('the gentle way') was created in 1882 by Jigoro Kano and became the first martial art admitted to the Olympics (1964).",
+ h:"ג'ודו ('הדרך העדינה') נוצר ב-1882 על ידי ג'יגורו קאנו והפך לאמנות הלחימה הראשונה שהתקבלה לאולימפיאדה (1964)."},
+{c:"Sports",s:"Sports",e:"⚽",
+ t:"Usain Bolt's 100 m world record (9.58 s, Berlin 2009) averages 37.58 km/h over the full distance.",
+ h:"שיא העולם של 100 מ' של אוסיין בולט (9.58 ש', ברלין 2009) מממוצע 37.58 קמ\"ש על כל המרחק."},
+{c:"Sports",s:"Sports",e:"⚽",
+ t:"A standard FIFA football pitch is 105 × 68 m. The 90-minute game became a convention in 1860s England through informal agreement.",
+ h:"מגרש כדורגל FIFA סטנדרטי הוא 105×68 מ'. משחק ב-90 דקות הפך למוסכמה באנגליה של שנות ה-1860 דרך הסכמה בלתי-פורמלית."},
+{c:"Sports",s:"Sports",e:"⚽",
+ t:"Swimming engages up to 50 major muscle groups per stroke cycle — making it one of the most complete full-body workouts.",
+ h:"שחייה מפעילה עד 50 קבוצות שרירים עיקריות בכל מחזור שחייה — מה שהופך אותה לאחד מהאימונים הגופניים המלאים ביותר."},
+{c:"Sports",s:"Sports",e:"⚽",
+ t:"The baseball's standard circumference (229–235 mm) has remained essentially unchanged since 1872.",
+ h:"היקף הכדור הסטנדרטי בבייסבול (229–235 מ\"מ) כמעט ולא השתנה מאז 1872."},
+{c:"Sports",s:"Sports",e:"⚽",
+ t:"Chess is at least 1,500 years old, originating in India. The first match using modern rules was played ~1490 in Göttingen.",
+ h:"שחמט הוא לפחות בן 1,500 שנה, שמקורו בהודו. המשחק הראשון עם חוקים מודרניים שוחק בכ-1490 בגטינגן."},
+{c:"Sports",s:"Sports",e:"⚽",
+ t:"The Ashes cricket rivalry between England and Australia began in 1882 after a mock obituary declared English cricket 'dead'.",
+ h:"תחרות האשס בקריקט בין אנגליה לאוסטרליה החלה ב-1882 לאחר מודעת אבל מדומה שהכריזה על הקריקט האנגלי כ'מת'."},
+{c:"Sports",s:"Sports",e:"⚽",
+ t:"Fencing is one of only five sports to have featured at every modern Summer Olympics since 1896.",
+ h:"סייף הוא אחד מחמשת ענפי הספורט בלבד שהיו בכל אולימפיאדת קיץ מודרנית מאז 1896."},
+{c:"Sports",s:"Sports",e:"⚽",
+ t:"El Capitan's 'Dawn Wall' free climb (Yosemite, 2015) is considered the hardest big-wall free climb ever completed.",
+ h:"טיפוס חופשי על 'קיר השחר' של אל קפיטן (יוסמיטי, 2015) נחשב לטיפוס הגדול-קיר החופשי הקשה ביותר שהושלם אי פעם."},
+{c:"Sports",s:"Sports",e:"⚽",
+ t:"The world record deadlift exceeds 500 kg — heavier than a grand piano.",
+ h:"שיא העולם בהרמת משא עולה על 500 ק\"ג — כבד יותר מפסנתר גרנד."},
+// Food
+{c:"Food",s:"Food",e:"🍎",
+ t:"The tomato is botanically a fruit. The US Supreme Court ruled it a vegetable in 1893 purely for tariff purposes.",
+ h:"עגבנייה היא מבחינה בוטנית פרי. בית המשפט העליון של ארה\"ב הכריז עליה ירק ב-1893 למטרות מכס בלבד."},
+{c:"Food",s:"Food",e:"🍎",
+ t:"Honey does not spoil — 3,000-year-old honey found in Egyptian tombs was still edible. Its low moisture and acidity prevent bacteria.",
+ h:"דבש לא מתקלקל — דבש בן 3,000 שנה שנמצא בקברי מצרים עדיין היה ראוי לאכילה. לחות נמוכה וחומציות מונעות חיידקים."},
+{c:"Food",s:"Food",e:"🍎",
+ t:"Pineapples contain bromelain, a protein-digesting enzyme that can cause a tingling sensation as it breaks down mouth tissue.",
+ h:"אננסים מכילים ברומלאין, אנזים לעיכול חלבונים שיכול לגרום לתחושת עקצוץ כשהוא מפרק רקמת הפה."},
+{c:"Food",s:"Food",e:"🍎",
+ t:"Coffee is the world's second most traded commodity after oil. ~2.5 billion cups are consumed globally every day.",
+ h:"קפה הוא הסחורה הנסחרת השנייה בעולם לאחר נפט. כ-2.5 מיליארד כוסות נצרכות ברחבי העולם מדי יום."},
+{c:"Food",s:"Food",e:"🍎",
+ t:"Chilli heat is measured in Scoville Units: bell pepper = 0; jalapeño = 2,500–8,000; Carolina Reaper = over 2.2 million.",
+ h:"חריפות של פלפל נמדדת ביחידות סקוויל: פלפל ירוק = 0; חלפנייו = 2,500–8,000; פלפל קרולינה ריפר = מעל 2.2 מיליון."},
+{c:"Food",s:"Food",e:"🍎",
+ t:"Apples float because they are ~25% air — this also gives them their distinctive crisp texture when bitten.",
+ h:"תפוחים צפים כי הם כ-25% אוויר — זה גם מקנה להם את המרקם הפריך המאפיין שלהם בנשיכה."},
+{c:"Food",s:"Food",e:"🍎",
+ t:"Dark chocolate (above 70% cacao) is rich in flavonoids — antioxidants linked to modest reductions in blood pressure.",
+ h:"שוקולד מריר (מעל 70% קקאו) עשיר בפלבנואידים — נוגדי חמצון הקשורים להפחתות מתונות בלחץ דם."},
+{c:"Food",s:"Food",e:"🍎",
+ t:"Eggs contain all nine essential amino acids in proportions close to human needs — one of the most nutritionally complete single foods.",
+ h:"ביצים מכילות את כל תשע חומצות האמינו החיוניות בפרופורציות קרובות לצרכי האדם — אחד ממזוני השלמות הבודדים הטובים ביותר."},
+{c:"Food",s:"Food",e:"🍎",
+ t:"Sushi did not originate in Japan — it evolved from a Southeast Asian fish-preservation technique. The Japanese fresh version came in the 1800s.",
+ h:"סושי לא מקורו ביפן — הוא התפתח מטכניקת שימור דגים של דרום מזרח אסיה. הגרסה היפנית הטרייה הגיעה במאה ה-19."},
+{c:"Food",s:"Food",e:"🍎",
+ t:"The story that Marco Polo brought pasta to Italy from China is a myth. 12th-century Arab texts already describe dry pasta in Sicily.",
+ h:"הסיפור שמארקו פולו הביא פסטה לאיטליה מסין הוא מיתוס. כתבים ערביים מהמאה ה-12 כבר מתארים פסטה יבשה בסיציליה."},
+{c:"Food",s:"Food",e:"🍎",
+ t:"~80% of commercial vanilla flavouring is synthetic vanillin made from petrochemicals. Real vanilla pods come from orchids.",
+ h:"כ-80% מהתיבול הוניל המסחרי הוא וניל סינתטי עשוי מנגזרות פטרוכימיות. תרמילי וניל אמיתיים מגיעים מסחלבים."},
+{c:"Food",s:"Food",e:"🍎",
+ t:"The banana plant is technically an herb — the world's tallest non-woody plant and can grow over 9 metres tall.",
+ h:"צמח הבננה הוא טכנית עשב — הצמח הלא-עצי הגבוה ביותר בעולם ויכול לגדול מעל 9 מטר."},
+{c:"Food",s:"Food",e:"🍎",
+ t:"Tea is the world's second most consumed beverage after water — ~3 billion cups drunk daily across all varieties.",
+ h:"תה הוא המשקה השני הנצרך ביותר בעולם לאחר מים — כ-3 מיליארד כוסות נשתות מדי יום בכל הסוגים."},
+{c:"Food",s:"Food",e:"🍎",
+ t:"Cauliflower, broccoli, Brussels sprouts, kale, cabbage, and kohlrabi are all the same species — Brassica oleracea.",
+ h:"כרובית, ברוקולי, כרוב ניצנים, קייל, כרוב וקולרבי הם כולם אותו מין — Brassica oleracea."},
+{c:"Food",s:"Food",e:"🍎",
+ t:"The avocado is an 'evolutionary anachronism' — it evolved to be eaten by large Pleistocene megafauna extinct ~13,000 years ago.",
+ h:"האבוקדו הוא 'אנכרוניזם אבולוציוני' — הוא התפתח כדי להיאכל על ידי מגה-פאונה גדולה מהפליסטוקן שנכחדה לפני כ-13,000 שנה."},
+{c:"Food",s:"Food",e:"🍎",
+ t:"Wasabi in most restaurants outside Japan is dyed horseradish + mustard. Real wasabi (Wasabia japonica) is extremely difficult to grow.",
+ h:"וואסאבי ברוב המסעדות מחוץ ליפן הוא חריין צבוע ועם חרדל. וואסאבי אמיתי (Wasabia japonica) קשה ביותר לגידול."},
+{c:"Food",s:"Food",e:"🍎",
+ t:"Capsaicin (the 'hot' in chillies) binds to TRPV1 pain receptors — the same ones that respond to actual heat above 43 °C.",
+ h:"קפסאיצין ('החריף' בפלפלים חריפים) קושר קולטני כאב TRPV1 — אותם הקולטנים שמגיבים לחום ממשי מעל 43°C."},
+{c:"Food",s:"Food",e:"🍎",
+ t:"Leavened bread dates back at least 5,000 years — wild yeast residue has been found on ancient Egyptian grinding stones.",
+ h:"לחם מחמצת קיים לפחות 5,000 שנה — שאריות שמרים פראיים נמצאו על אבני טחינה מצריות עתיקות."},
+{c:"Food",s:"Food",e:"🍎",
+ t:"The Maillard reaction (browning of toast, coffee, seared meat) creates hundreds of new flavour molecules — distinct from caramelisation.",
+ h:"תגובת מאיאר (השחמת לחם קלוי, קפה, בשר צרוב) יוצרת מאות מולקולות טעם חדשות — שונה מקרמליזציה."},
+{c:"Food",s:"Food",e:"🍎",
+ t:"Chocolate was consumed as a bitter drink by Mesoamerican civilisations for over 3,000 years before Europeans added sugar.",
+ h:"שוקולד נצרך כמשקה מר על ידי תרבויות מזו-אמריקאיות ליותר מ-3,000 שנה לפני שאירופאים הוסיפו סוכר."},
+// Philosophy
+{c:"Philosophy",s:"Philosophy",e:"🤔",
+ t:"Descartes' 'Cogito ergo sum' (1637): the very act of doubting proves a thinker exists — the one indubitable fact.",
+ h:"'אני חושב, לכן אני קיים' של דקארט (1637): עצם פעולת הספק מוכיחה שחושב קיים — העובדה האחת שלא ניתן להטיל בה ספק."},
+{c:"Philosophy",s:"Philosophy",e:"🤔",
+ t:"Ship of Theseus: if a ship's every plank is gradually replaced, is it still the same ship? A central puzzle about identity.",
+ h:"ספינת תזאוס: אם כל לוח בספינה מוחלף בהדרגה, האם היא עדיין אותה ספינה? חידה מרכזית בנושא זהות."},
+{c:"Philosophy",s:"Philosophy",e:"🤔",
+ t:"Kant argued the mind actively structures reality — time, space, and causality are frameworks the brain imposes on experience.",
+ h:"קאנט טען שהמוח מעצב באופן פעיל את המציאות — זמן, מרחב וסיבתיות הם מסגרות שהמוח מטיל על החוויה."},
+{c:"Philosophy",s:"Philosophy",e:"🤔",
+ t:"Mill's Harm Principle (1859): the state may only restrict freedom to prevent harm to others, not to protect people from themselves.",
+ h:"עקרון הנזק של מיל (1859): המדינה רשאית רק להגביל חירות למניעת נזק לאחרים, לא להגן על אנשים מעצמם."},
+{c:"Philosophy",s:"Philosophy",e:"🤔",
+ t:"Occam's Razor is a methodological guideline: prefer the simpler explanation when two are otherwise equal.",
+ h:"סכין אוקאם הוא הנחיה מתודולוגית: העדף את ההסבר הפשוט יותר כשאחרים שווים."},
+{c:"Philosophy",s:"Philosophy",e:"🤔",
+ t:"The Sorites Paradox: how many grains of sand make a heap? Removing one never turns a heap into a non-heap — so where is the line?",
+ h:"פרדוקס סוריטס: כמה גרגרי חול עושים ערמה? הסרת אחד לא הופכת ערמה ללא-ערמה — אז איפה הגבול?"},
+{c:"Philosophy",s:"Philosophy",e:"🤔",
+ t:"Nietzsche wrote: 'What does not kill me makes me stronger' — from Twilight of the Idols (1888).",
+ h:"ניטשה כתב: 'מה שלא הורג אותי מחזק אותי' — מ'דמדומי האלים' (1888)."},
+{c:"Philosophy",s:"Philosophy",e:"🤔",
+ t:"The trolley problem has no universally accepted answer — it exposes a conflict between consequentialism (save more) and deontology (do not use someone as a means).",
+ h:"לבעיית העגלה אין תשובה מקובלת אוניברסלית — היא חושפת סתירה בין תועלתנות (הצל יותר) לאתיקה (אל תשתמש במישהו כאמצעי)."},
+{c:"Philosophy",s:"Philosophy",e:"🤔",
+ t:"Plato's Allegory of the Cave: ordinary people mistake shadows for reality — only the philosopher, facing the light, sees true Forms.",
+ h:"משל המערה של אפלטון: אנשים רגילים מבלבלים בין צללים למציאות — רק הפילוסוף, הפונה לאור, רואה את הצורות האמיתיות."},
+{c:"Philosophy",s:"Philosophy",e:"🤔",
+ t:"Hard determinism holds that every choice is causally necessitated by prior events — apparently leaving no room for free will.",
+ h:"דטרמיניזם קשה גורס שכל בחירה נגרמת בהכרח על ידי אירועים קודמים — לכאורה ללא מקום לרצון חופשי."},
+{c:"Philosophy",s:"Philosophy",e:"🤔",
+ t:"Bostrom's Simulation Argument (2003): one of three things must be true — civilisations go extinct, they avoid simulations, or we are in one.",
+ h:"טיעון הסימולציה של בוסטרום (2003): אחת משלוש חייבת להיות נכונה — ציוויליזציות נכחדות, הן מונעות סימולציות, או אנחנו בתוך אחת."},
+{c:"Philosophy",s:"Philosophy",e:"🤔",
+ t:"Rawls's Veil of Ignorance (1971): design a fair society without knowing which position in it you will occupy.",
+ h:"מסך הבערות של רולס (1971): תכנן חברה הוגנת מבלי לדעת איזה מעמד תיתפוס בה."},
+{c:"Philosophy",s:"Philosophy",e:"🤔",
+ t:"Stoicism (Athens, ~301 BC) teaches: focus only on what is within your control; accept everything else with equanimity.",
+ h:"הסטואיציזם (אתונה, כ-301 לפנה\"ס) מלמד: התמקד רק במה שבשליטתך; קבל כל השאר בשוויון נפש."},
+{c:"Philosophy",s:"Philosophy",e:"🤔",
+ t:"Searle's Chinese Room (1980): a machine can pass a language test without understanding anything — challenging AI claims.",
+ h:"חדר הסינית של סרל (1980): מכונה יכולה לעבור מבחן שפה מבלי להבין דבר — מאתגרת טענות של בינה מלאכותית."},
+{c:"Philosophy",s:"Philosophy",e:"🤔",
+ t:"Aristotle defined humans as 'political animals' — by nature requiring a community (polis) to flourish.",
+ h:"אריסטו הגדיר בני אדם כ'חיות פוליטיות' — מטבעם הם זקוקים לקהילה (פוליס) כדי לשגשג."},
+{c:"Philosophy",s:"Philosophy",e:"🤔",
+ t:"Hume's Problem of Induction: no finite observations can prove a universal law — we cannot be certain the sun will rise tomorrow.",
+ h:"בעיית האינדוקציה של יום: אי-אפשר להוכיח חוק אוניברסלי מתצפיות סופיות — אנחנו לא יכולים להיות בטוחים שהשמש תזרח מחר."},
+{c:"Philosophy",s:"Philosophy",e:"🤔",
+ t:"Utilitarianism (Bentham, Mill): the morally right action produces the greatest happiness for the greatest number of people.",
+ h:"תועלתנות (בנת'ם, מיל): הפעולה המוסרית הנכונה היא זו שמייצרת את האושר הגדול ביותר לכמות הגדולה ביותר של אנשים."},
+{c:"Philosophy",s:"Philosophy",e:"🤔",
+ t:"The Liar Paradox — 'This sentence is false' — is self-contradictory: if true it is false; if false it is true.",
+ h:"פרדוקס השקרן — 'משפט זה הוא שקר' — הוא סותר עצמו: אם נכון הוא שקר; אם שקר הוא נכון."},
+{c:"Philosophy",s:"Philosophy",e:"🤔",
+ t:"Camus described the Absurd as the conflict between humanity's need for meaning and the universe's silent indifference.",
+ h:"קאמי תיאר את האבסורד כסתירה בין הצורך האנושי במשמעות ולבין האדישות השקטה של היקום."},
+// Biology
+{c:"Biology",s:"Biology",e:"🧬",
+ t:"Every living organism uses the same four DNA bases: adenine, thymine, guanine, and cytosine.",
+ h:"כל יצור חי משתמש באותם ארבעה בסיסי DNA: אדנין, תימין, גואנין וציטוזין."},
+{c:"Biology",s:"Biology",e:"🧬",
+ t:"Mitochondria have their own DNA — evidence they were once free-living bacteria engulfed by larger cells ~1.5 billion years ago.",
+ h:"למיטוכונדריה יש DNA משלהן — ראיה שהיו פעם חיידקים חיים חופשיים שנבלעו על ידי תאים גדולים יותר לפני כ-1.5 מיליארד שנה."},
+{c:"Biology",s:"Biology",e:"🧬",
+ t:"DNA polymerase copies DNA with fewer than one error per billion bases — a precision no human-made process approaches.",
+ h:"פולימראז DNA מעתיק DNA עם פחות משגיאה אחת לכל מיליארד בסיסים — דיוק שאף תהליך מעשה-ידי-אדם לא מתקרב אליו."},
+{c:"Biology",s:"Biology",e:"🧬",
+ t:"Viruses are generally non-living: no metabolism, cannot reproduce independently, and must hijack host cells to replicate.",
+ h:"וירוסים בדרך כלל אינם חיים: אין מטבוליזם, אינם יכולים להתרבות באופן עצמאי, וחייבים לחטוף תאי מארח כדי להתרבות."},
+{c:"Biology",s:"Biology",e:"🧬",
+ t:"CRISPR-Cas9 originates from the bacterial immune system — bacteria store viral DNA snippets to identify and destroy future infections.",
+ h:"CRISPR-Cas9 מקורו במערכת החיסונית של חיידקים — חיידקים שומרים קטעי DNA ויראלי כדי לזהות ולהשמיד זיהומים עתידיים."},
+{c:"Biology",s:"Biology",e:"🧬",
+ t:"Any two humans share 99.9% of their DNA. The 0.1% difference accounts for all the biological variation we can observe.",
+ h:"כל שני בני אדם חולקים 99.9% מה-DNA שלהם. הפרש ה-0.1% מסביר את כל הגיוון הביולוגי הנראה שאנחנו יכולים לצפות."},
+{c:"Biology",s:"Biology",e:"🧬",
+ t:"Humans share ~60% of their DNA with a banana — showing how much fundamental cellular machinery has been conserved over billions of years.",
+ h:"בני אדם חולקים כ-60% מה-DNA שלהם עם בננה — מראה כמה מהמנגנון התאי הבסיסי שמור לאורך מיליארדי שנים."},
+{c:"Biology",s:"Biology",e:"🧬",
+ t:"All life belongs to one of three domains: Bacteria, Archaea, and Eukaryota — all descending from a common ancestor ~3.5 billion years ago.",
+ h:"כל החיים שייכים לאחת משלוש תחומות: בקטריה, ארכיאה ואאוקריוטה — כולם צאצאים של אב משותף לפני כ-3.5 מיליארד שנה."},
+{c:"Biology",s:"Biology",e:"🧬",
+ t:"Antibiotics kill bacteria but are useless against viruses. Misusing them accelerates antibiotic resistance.",
+ h:"אנטיביוטיקה הורגת חיידקים אך חסרת תועלת נגד וירוסים. שימוש לרעה בה מאיץ עמידות לאנטיביוטיקה."},
+{c:"Biology",s:"Biology",e:"🧬",
+ t:"Epigenetics studies heritable changes in gene expression without changes to DNA sequence — environment can affect gene activity for generations.",
+ h:"אפיגנטיקה חוקרת שינויים תורשתיים בביטוי גנים ללא שינויים ברצף ה-DNA — הסביבה יכולה להשפיע על פעילות גנים לדורות."},
+{c:"Biology",s:"Biology",e:"🧬",
+ t:"The immune system has two branches: innate (fast, non-specific) and adaptive (slow but precise, with long-term memory). Vaccines train the adaptive branch.",
+ h:"למערכת החיסונית יש שני ענפים: מולדת (מהירה, לא ספציפית) ונרכשת (איטית אך מדויקת, עם זיכרון לטווח ארוך). חיסונים מאמנים את הענף הנרכש."},
+{c:"Biology",s:"Biology",e:"🧬",
+ t:"The giant isopod (Bathynomus giganteus) can grow to 45 cm and survive over five years without food.",
+ h:"איזופוד הענק (Bathynomus giganteus) יכול לגדול ל-45 ס\"מ ולשרוד מעל חמש שנים ללא מזון."},
+{c:"Biology",s:"Biology",e:"🧬",
+ t:"The bumblebee's flight is not aerodynamically impossible — earlier models were too simple. Bees generate lift via complex wing-tip vortices.",
+ h:"טיסת הדבורון אינה בלתי-אפשרית אירודינמית — מודלים קודמים היו פשוטים מדי. דבורים מייצרות עילוי דרך מערבולות קצה-כנף מורכבות."},
+{c:"Biology",s:"Biology",e:"🧬",
+ t:"FOXP2 — the 'language gene' — is uniquely mutated in humans compared to other primates and linked to complex speech development.",
+ h:"FOXP2 — 'גן השפה' — הוא בעל מוטציה ייחודית בבני אדם בהשוואה לפרימטים אחרים וקשור להתפתחות דיבור מורכב."},
+{c:"Biology",s:"Biology",e:"🧬",
+ t:"Horseshoe crab blood contains Limulus Amoebocyte Lysate (LAL) — used since the 1970s to test every injectable medicine for contamination.",
+ h:"דם סרטן הפרסה מכיל Limulus Amoebocyte Lysate (LAL) — משמש מאז שנות ה-70 לבדיקת כל תרופה שניתנת בהזרקה לזיהום."},
+{c:"Biology",s:"Biology",e:"🧬",
+ t:"The mantis shrimp has 16 types of photoreceptors vs. our 3 — yet its brain may actually process colour less discriminately than ours.",
+ h:"שרימפס המאנטיס מכיל 16 סוגי קולטני אור לעומת 3 שלנו — אך מוחו אולי מעבד צבע בצורה פחות מבחינה מאיתנו."},
+{c:"Biology",s:"Biology",e:"🧬",
+ t:"Gut bacteria outnumber human cells roughly one-to-one and produce neurotransmitters, vitamins, and compounds affecting mood and immunity.",
+ h:"חיידקי המעיים עולים על תאי הגוף האנושי ביחס של אחד-לאחד ומייצרים נוירוטרנסמיטרים, ויטמינים ותרכובות המשפיעות על מצב הרוח והחסינות."},
+{c:"Biology",s:"Biology",e:"🧬",
+ t:"The periodical cicada (Brood X) spends 17 years underground as a nymph before emerging for a few weeks to mate and die.",
+ h:"הציקדה המחזורית (Brood X) מבלה 17 שנה מתחת לאדמה כנימפה לפני שצצה לכמה שבועות כדי להזדווג ולמות."},
+{c:"Biology",s:"Biology",e:"🧬",
+ t:"Embryonic stem cells can become any cell type in the body. Adult stem cells are more limited but easier to obtain ethically.",
+ h:"תאי גזע עובריים יכולים להפוך לכל סוג תא בגוף. תאי גזע מבוגרים מוגבלים יותר אך קלים יותר להשגה מבחינה אתית."},
+// Physics
+{c:"Physics",s:"Physics",e:"⚛️",
+ t:"Special relativity (1905): the faster an object moves, the slower its time passes relative to a stationary observer — time dilation.",
+ h:"יחסות פרטית (1905): ככל שעצם נע מהר יותר, כך הזמן שלו עובר לאט יותר ביחס לצופה נייח — דילציית זמן."},
+{c:"Physics",s:"Physics",e:"⚛️",
+ t:"Heisenberg's Uncertainty Principle: it is fundamentally impossible to know both the exact position and momentum of a particle simultaneously.",
+ h:"עקרון אי-הוודאות של הייזנברג: בלתי-אפשרי מהותית לדעת בו-זמנית הן את המיקום המדויק והן את התנע של חלקיק."},
+{c:"Physics",s:"Physics",e:"⚛️",
+ t:"Schrödinger's Cat illustrates how quantum superposition — if taken literally — implies a cat is simultaneously alive and dead until observed.",
+ h:"חתול שרדינגר ממחיש כיצד כיפוף קוונטי — אם לוקחים אותו כפשוטו — מרמז שחתול הוא בו-זמנית חי ומת עד שנצפה."},
+{c:"Physics",s:"Physics",e:"⚛️",
+ t:"Superconductivity: certain materials lose all electrical resistance below a critical temperature — first discovered in 1911 by Kamerlingh Onnes.",
+ h:"על-מוליכות: חומרים מסוימים מאבדים את כל ההתנגדות החשמלית מתחת לטמפרטורה קריטית — התגלתה לראשונה ב-1911."},
+{c:"Physics",s:"Physics",e:"⚛️",
+ t:"The highest lab temperature ever achieved was ~5.5 trillion °C at CERN — briefly hotter than the centre of a supernova.",
+ h:"הטמפרטורה הגבוהה ביותר שהושגה במעבדה הייתה כ-5.5 טריליון °C ב-CERN — לרגע יותר חמה ממרכז סופרנובה."},
+{c:"Physics",s:"Physics",e:"⚛️",
+ t:"The photoelectric effect (Einstein, 1905) proved light behaves as particles (photons) as well as waves — winning Einstein the Nobel Prize.",
+ h:"אפקט הפוטואלקטרי (איינשטיין, 1905) הוכיח שאור מתנהג גם כחלקיקים (פוטונים) וגם כגלים — הכינה לאיינשטיין את פרס נובל."},
+{c:"Physics",s:"Physics",e:"⚛️",
+ t:"A black hole's event horizon is not a physical surface — it is the critical radius of spacetime beyond which nothing can escape.",
+ h:"אופק האירועים של חור שחור אינו משטח פיזי — הוא רדיוס קריטי של המרחב-זמן שמעבר לו דבר אינו יכול להימלט."},
+{c:"Physics",s:"Physics",e:"⚛️",
+ t:"Gravity is ~10³⁶ times weaker than electromagnetism, yet it dominates cosmic scales because it has infinite range and always attracts.",
+ h:"הכבידה חלשה כ-10³⁶ פעמים מהאלקטרומגנטיזם, אך היא שולטת בסולמות קוסמיים כי יש לה טווח אינסופי ותמיד מושכת."},
+{c:"Physics",s:"Physics",e:"⚛️",
+ t:"Sound cannot travel through a vacuum — the tagline 'In space, no one can hear you scream' is physically accurate.",
+ h:"קול לא יכול לנסוע דרך וואקום — הסלוגן 'בחלל, אף אחד לא ישמע אותך צועק' הוא מדויק פיזיקלית."},
+{c:"Physics",s:"Physics",e:"⚛️",
+ t:"The Doppler Effect explains why a siren sounds higher as it approaches and lower as it recedes — the same principle measures star velocities.",
+ h:"אפקט דופלר מסביר מדוע אזעקה נשמעת גבוהה יותר כשהיא מתקרבת ונמוכה יותר כשהיא מתרחקת — אותו עיקרון מודד מהירויות כוכבים."},
+{c:"Physics",s:"Physics",e:"⚛️",
+ t:"The Higgs boson was confirmed at CERN in 2012. Its associated field gives mass to particles such as quarks and electrons.",
+ h:"בוזון היגס אושר ב-CERN ב-2012. השדה הקשור אליו נותן מסה לחלקיקים כמו קוורקים ואלקטרונים."},
+{c:"Physics",s:"Physics",e:"⚛️",
+ t:"The positron (antielectron) was the first antimatter particle discovered — detected by Carl Anderson in 1932 in cosmic ray tracks.",
+ h:"הפוזיטרון (אנטי-אלקטרון) היה חלקיק האנטי-חומר הראשון שהתגלה — אותר על ידי קרל אנדרסון ב-1932 בעקבות קרינה קוסמית."},
+{c:"Physics",s:"Physics",e:"⚛️",
+ t:"Water pressure increases ~1 atmosphere per 10 m of depth. At the Mariana Trench it exceeds 1,000 atmospheres.",
+ h:"לחץ מים עולה בכ-1 ATM לכל 10 מ' עומק. בשוחת מריאנה הוא עולה על 1,000 ATM."},
+{c:"Physics",s:"Physics",e:"⚛️",
+ t:"Conservation of angular momentum: a spinning skater speeds up when pulling in arms — and explains why neutron stars rotate so fast.",
+ h:"שימור מומנט זווית: מחלקת מסתובבת מאיצה כשמכניסה ידיים — ומסביר מדוע כוכבי נוטרון מסתובבים כל כך מהר."},
+{c:"Physics",s:"Physics",e:"⚛️",
+ t:"Hawking radiation (1974): black holes slowly emit thermal radiation and eventually evaporate — Stephen Hawking's most famous theoretical prediction.",
+ h:"קרינת הוקינג (1974): חורים שחורים פולטים לאט קרינה תרמית ובסוף מתאדים — ניבויו התיאורטי המפורסם ביותר של סטיבן הוקינג."},
+{c:"Physics",s:"Physics",e:"⚛️",
+ t:"The Pauli Exclusion Principle: no two identical fermions can occupy the same quantum state — the reason matter takes up space.",
+ h:"עקרון האי-הכללה של פאולי: לא יכולים שני פרמיונים זהים לתפוס את אותו המצב הקוונטי — הסיבה שחומר תופס מקום."},
+{c:"Physics",s:"Physics",e:"⚛️",
+ t:"Cherenkov radiation is the blue glow seen in nuclear reactors — produced when a charged particle moves faster than light in that medium.",
+ h:"קרינת צ'רנקוב היא הזוהר הכחול הנראה בכורים גרעיניים — מיוצרת כשחלקיק טעון נע מהר יותר מאור באותו מדיום."},
+{c:"Physics",s:"Physics",e:"⚛️",
+ t:"The Standard Model of particle physics describes 17 fundamental particles and three of the four forces — everything except gravity.",
+ h:"המודל הסטנדרטי של פיזיקת חלקיקים מתאר 17 חלקיקים יסודיים ושלושה מארבעת הכוחות — הכל חוץ מכבידה."},
+// Chemistry
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"Mendeleev's periodic table (1869) arranged elements by atomic mass and predicted the properties of several undiscovered elements.",
+ h:"הטבלה המחזורית של מנדלייב (1869) סידרה יסודות לפי מסה אטומית וניבאה את תכונות מספר יסודות שלא התגלו עדיין."},
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"Water is called the 'universal solvent' because its polarity allows it to dissolve more substances than any other liquid.",
+ h:"מים נקראים 'ממס אוניברסלי' כי הפולריות שלהם מאפשרת להם להמיס יותר חומרים מכל נוזל אחר."},
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"Helium was discovered in the Sun before it was found on Earth — identified in sunlight by spectroscopy in 1868.",
+ h:"הליום התגלה בשמש לפני שנמצא בכדור הארץ — זוהה באור השמש על ידי ספקטרוסקופיה ב-1868."},
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"Carbon-14 decays at a constant rate (half-life: 5,730 years), making radiocarbon dating reliable up to ~50,000 years.",
+ h:"פחמן-14 מתפרק בקצב קבוע (מחצית חיים: 5,730 שנה), מה שהופך תארוך פחמן רדיואקטיבי לאמין עד כ-50,000 שנה."},
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"Ozone (O₃) forms in the stratosphere when UV radiation splits O₂ molecules — shielding Earth from harmful ultraviolet light.",
+ h:"אוזון (O₃) נוצר בסטרטוספרה כשקרינת UV מפצלת מולקולות O₂ — מגן על כדור הארץ מאור אולטרה-סגול מזיק."},
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"Sulfuric acid (H₂SO₄) is the world's most produced chemical — used in fertilisers, batteries, mineral processing, and more.",
+ h:"חומצה גופרתית (H₂SO₄) היא הכימיקל המיוצר ביותר בעולם — משמש בדשנים, סוללות, עיבוד מינרלים ועוד."},
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"Diamond is the hardest natural substance, but graphite — same carbon atoms — is the thermodynamically stable form at room temperature.",
+ h:"יהלום הוא החומר הטבעי הקשה ביותר, אך גרפיט — אותם אטומי פחמן — הוא הצורה היציבה תרמודינמית בטמפרטורת חדר."},
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"Nitrogen is 78% of the atmosphere, but most organisms cannot use N₂ directly — nitrogen-fixing bacteria convert it into usable forms.",
+ h:"ניטרוגן הוא 78% מהאטמוספרה, אך רוב היצורים אינם יכולים להשתמש ב-N₂ ישירות — חיידקים קובעי-ניטרוגן ממירים אותו לצורות שמישות."},
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"Exothermic reactions release heat (combustion); endothermic reactions absorb it (ice melting) — the basis of hand warmers and cold packs.",
+ h:"תגובות אקסותרמיות משחררות חום (בעירה); תגובות אנדותרמיות סופגות אותו (המסת קרח) — הבסיס של חממות-ידיים ואריזות קרות."},
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"Fluorine is the most electronegative element — it attracts electrons more strongly than any other and reacts with nearly everything.",
+ h:"פלואור הוא היסוד האלקטרושלילי ביותר — הוא מושך אלקטרונים חזק יותר מכל יסוד אחר ומגיב עם כמעט הכל."},
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"Oxidation is the loss of electrons; reduction is the gain. They always happen together — you cannot have one without the other (redox).",
+ h:"חמצון הוא אובדן אלקטרונים; חיזור הוא קבלתם. הם תמיד קורים יחד — אי-אפשר לקבל אחד ללא השני (רדוקס)."},
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"Buckminsterfullerene (C₆₀), discovered in 1985, is a carbon cage shaped exactly like a football. Its discoverers won the Nobel in 1996.",
+ h:"בקמינסטרפולרן (C₆₀), שהתגלה ב-1985, הוא כלוב פחמן בצורה בדיוק של כדור כדורגל. מגלייו זכו בנובל ב-1996."},
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"Esters give fruits their characteristic smells — isoamyl acetate smells like banana, ethyl butyrate like pineapple.",
+ h:"אסטרים נותנים לפירות את ריחותיהם האופייניים — אמיל אצטאט ריחו כמו בננה, אתיל בוטירט כמו אננס."},
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"Sodium and potassium are soft metals that react violently — even ignite — when they come into contact with water.",
+ h:"נתרן ואשלגן הם מתכות רכות שמגיבות בחוזקה — ואפילו מתלקחות — כשהן באות במגע עם מים."},
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"pH is logarithmic: each unit is a tenfold change in hydrogen ion concentration. pH 3 is 100 times more acidic than pH 5.",
+ h:"pH הוא לוגריתמי: כל יחידה היא שינוי פי עשרה בריכוז יוני מימן. pH 3 הוא 100 פעמים יותר חומצי מ-pH 5."},
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"The Haber process (1909) synthesises ammonia from atmospheric nitrogen. It now produces fertiliser for roughly half the global population.",
+ h:"תהליך האבר (1909) מסנתז אמוניה מניטרוגן אטמוספרי. הוא מייצר כיום דשן לכ-מחצית מאוכלוסיית העולם."},
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"Catalysts speed reactions without being consumed. Enzymes are biological catalysts that can accelerate reactions by factors of up to 10¹⁷.",
+ h:"קטליזטורים מאיצים תגובות מבלי להיצרך. אנזימים הם קטליזטורים ביולוגיים שיכולים להאיץ תגובות בגורמים של עד 10¹⁷."},
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"Noble gases (Group 18) are chemically inert because their outer electron shells are completely filled.",
+ h:"גזים נאצלים (קבוצה 18) הם אינרטיים כימית כי מעטפות האלקטרונים החיצוניות שלהם מלאות לחלוטין."},
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"The Maillard reaction creates hundreds of flavour molecules when browning bread, coffee, or seared meat — distinct from caramelisation.",
+ h:"תגובת מאיאר יוצרת מאות מולקולות טעם בעת השחמת לחם, קפה או בשר — שונה מקרמליזציה."},
+{c:"Chemistry",s:"Chemistry",e:"🧪",
+ t:"Liquid nitrogen boils at −196 °C. Spilled on a warm surface it skates frictionlessly on a vapour cushion — the Leidenfrost effect.",
+ h:"חנקן נוזלי רותח ב-196°C−. מנוזל על משטח חם הוא מחליק ללא חיכוך על כרית אדים — אפקט לידנפרוסט."},
+];
+
+// ════════════════════════════════════════
+//  BUILD INTERLEAVED DAY ORDER
+// ════════════════════════════════════════
+const CAT_ORDER = [
+  "Science","History","Nature","Human Body","Space","Geography","Mathematics",
+  "Psychology","Technology","Economics","Language","Music","Sports","Food",
+  "Philosophy","Biology","Physics","Chemistry"
+];
+
+function buildOrder() {
+  const bycat = {};
+  FACTS.forEach((f,i) => { if(!bycat[f.c]) bycat[f.c]=[]; bycat[f.c].push(i); });
+  const buckets = CAT_ORDER.filter(c=>bycat[c]).map(c=>[...bycat[c]]);
+  const out = [];
+  while(out.length < FACTS.length) {
+    for(let b=0; b<buckets.length && out.length<FACTS.length; b++) {
+      if(buckets[b].length) out.push(buckets[b].shift());
+    }
+  }
+  return out;
+}
+const DAY_ORDER = buildOrder();
+
+function todaySlot() {
+  const now = new Date();
+  const doy = Math.ceil((now - new Date(now.getFullYear(),0,1)) / 86400000);
+  return ((doy-1) % DAY_ORDER.length);
+}
+
+let currentSlot = todaySlot();
+let showTranslation = false;
+let showTranslationAll = false;
+
+function getFactAt(slot) {
+  const idx = DAY_ORDER[((slot%DAY_ORDER.length)+DAY_ORDER.length)%DAY_ORDER.length];
+  return FACTS[idx];
+}
+
+// ════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════
+function gs() { try{ return JSON.parse(localStorage.getItem('cd3')||'{}'); }catch(e){return{};} }
+function ss(s) { localStorage.setItem('cd3',JSON.stringify(s)); }
+
+function updateStreak() {
+  const s=gs(), today=new Date().toDateString(), yest=new Date(Date.now()-86400000).toDateString();
+  if(s.lastVisit===today) return;
+  s.streak = s.lastVisit===yest ? (s.streak||0)+1 : 1;
+  s.lastVisit=today; s.seen=(s.seen||0)+1;
+  ss(s);
+}
+
+// ════════════════════════════════════════
+//  RENDER HOME
+// ════════════════════════════════════════
+function renderHome(slot) {
+  if(slot===undefined) slot=todaySlot();
+  currentSlot=slot;
+  const f=getFactAt(slot);
+  const theme='cat-'+f.s;
+
+  document.getElementById('home').className='view active '+theme;
+
+  // date
+  const base=new Date(); const off=slot-todaySlot();
+  const d=new Date(base.getTime()+off*86400000);
+  document.getElementById('metaDate').textContent =
+    d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+
+  // streak
+  const st=gs();
+  document.getElementById('streakDisp').textContent=st.streak||0;
+  document.getElementById('tileStreak').textContent=st.streak||0;
+  document.getElementById('tileSeen').textContent=st.seen||0;
+
+  // badge
+  document.getElementById('badgeEmoji').textContent=f.e;
+  document.getElementById('badgeName').textContent=f.c;
+
+  // card
+  document.getElementById('factText').textContent=f.t;
+  document.getElementById('heText').textContent=f.h;
+  document.getElementById('cardMeta').textContent=f.c;
+
+  // show/hide translation
+  const heEl=document.getElementById('factTextHe');
+  if(showTranslation) heEl.classList.add('visible');
+  else heEl.classList.remove('visible');
+
+  // dots
+  const dotsEl=document.getElementById('navDots');
+  dotsEl.innerHTML='';
+  [-2,-1,0,1,2].forEach(delta=>{
+    const dot=document.createElement('div');
+    dot.className='dot'+(delta===0?' active':'');
+    dot.onclick=()=>renderHome(slot+delta);
+    dotsEl.appendChild(dot);
+  });
+
+  updateRemDisp();
+  // force accent onto nav-btn.active
+  syncNavAccent();
+}
+
+function syncNavAccent() {
+  // the active nav btn should inherit --accent from whatever cat is showing
+  // handled via CSS .nav-btn.active { color: var(--accent) }
+}
+
+function prevFact(){ renderHome(currentSlot-1); }
+function nextFact(){ renderHome(currentSlot+1); }
+
+// ════════════════════════════════════════
+//  TRANSLATE
+// ════════════════════════════════════════
+function toggleTranslate() {
+  showTranslation=!showTranslation;
+  const btn=document.getElementById('translateBtn');
+  btn.textContent=showTranslation?'🇮🇱 Hide':'🇮🇱 עברית';
+  const heEl=document.getElementById('factTextHe');
+  if(showTranslation) heEl.classList.add('visible');
+  else heEl.classList.remove('visible');
+}
+
+function toggleTranslateAll() {
+  showTranslationAll=!showTranslationAll;
+  const btn=document.getElementById('translateAllBtn');
+  btn.textContent=showTranslationAll?'🇮🇱 Hide':'🇮🇱 עברית';
+  document.querySelectorAll('.mini-text-he').forEach(el=>{
+    if(showTranslationAll) el.classList.add('visible');
+    else el.classList.remove('visible');
+  });
+}
+
+// ════════════════════════════════════════
+//  ALL FACTS
+// ════════════════════════════════════════
+function renderAllFacts(q) {
+  q=(q||'').toLowerCase().trim();
+  const todayFactIdx=DAY_ORDER[todaySlot()];
+  const filtered=FACTS.map((f,i)=>({f,i})).filter(({f})=>
+    !q || f.t.toLowerCase().includes(q) || f.c.toLowerCase().includes(q) || f.h.includes(q)
+  );
+  const container=document.getElementById('factsContent');
+  if(!filtered.length){ container.innerHTML='<p style="text-align:center;padding:60px;color:var(--mid)">No results found.</p>'; return; }
+
+  const groups={};
+  filtered.forEach(({f,i})=>{ if(!groups[f.c]) groups[f.c]=[]; groups[f.c].push({f,i}); });
+
+  container.innerHTML=CAT_ORDER.filter(c=>groups[c]).map(cat=>{
+    const items=groups[cat];
+    const th='cat-'+items[0].f.s;
+    return `<div class="cat-section ${th}">
+      <div class="cat-sec-hdr">
+        <span style="font-size:1.05rem">${items[0].f.e}</span>
+        <span class="cat-sec-title">${cat}</span>
+        <span class="cat-count">${items.length}</span>
+      </div>
+      <div class="facts-grid">
+        ${items.map(({f,i})=>`
+          <div class="mini-card ${i===todayFactIdx?'is-today':''}" onclick="jumpTo(${i})">
+            ${i===todayFactIdx?'<div class="mini-today-tag">📅 TODAY\'S FACT</div>':''}
+            <p class="mini-text">${f.t}</p>
+            <p class="mini-text-he ${showTranslationAll?'visible':''}">${f.h}</p>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function jumpTo(factIdx) {
+  const slotInOrder=DAY_ORDER.indexOf(factIdx);
+  const today=todaySlot();
+  const diff=slotInOrder-(today%DAY_ORDER.length);
+  showView('home');
+  renderHome(today+diff);
+}
+
+function filterFacts(){ renderAllFacts(document.getElementById('searchIn').value); }
+
+// ════════════════════════════════════════
+//  SETTINGS
+// ════════════════════════════════════════
+function loadSettings(){
+  const s=gs();
+  const en=document.getElementById('remEn');
+  if(s.remEn){ en.checked=true; toggleTR(); }
+  if(s.remH!==undefined) document.getElementById('remH').value=String(s.remH).padStart(2,'0');
+  if(s.remM!==undefined) document.getElementById('remM').value=String(s.remM).padStart(2,'0');
+  updateSettingsStats();
+}
+function toggleTR(){
+  const e=document.getElementById('remEn').checked;
+  const r=document.getElementById('timeRow');
+  r.style.opacity=e?'1':'.35'; r.style.pointerEvents=e?'all':'none';
+}
+function padN(el,max){ let v=Math.max(0,Math.min(max,parseInt(el.value)||0)); el.value=String(v).padStart(2,'0'); }
+
+function updateRemDisp(){
+  const s=gs(), d=document.getElementById('remDisp');
+  d.textContent=s.remEn&&s.remH!==undefined?`${String(s.remH).padStart(2,'0')}:${String(s.remM||0).padStart(2,'0')}`:'Not set';
+}
+function updateSettingsStats(){
+  const s=gs();
+  document.getElementById('sSt').textContent=s.streak||0;
+  document.getElementById('sSn').textContent=s.seen||0;
+}
+function saveSettings(){
+  const s=gs();
+  s.remEn=document.getElementById('remEn').checked;
+  s.remH=parseInt(document.getElementById('remH').value)||8;
+  s.remM=parseInt(document.getElementById('remM').value)||0;
+  ss(s); updateRemDisp();
+  if(s.remEn&&'Notification'in window){
+    Notification.requestPermission().then(p=>{ if(p==='granted') schedNotif(s.remH,s.remM); });
+  }
+  toast('Settings saved ✓');
+}
+function schedNotif(h,m){
+  const now=new Date(), t=new Date(); t.setHours(h,m,0,0);
+  if(t<=now) t.setDate(t.getDate()+1);
+  setTimeout(()=>new Notification('Curious Daily 📚',{body:"Your daily fact is waiting!"}),t-now);
+}
+function resetData(){
+  if(!confirm('Reset all data?')) return;
+  const s=gs(); delete s.streak; delete s.seen; delete s.lastVisit; ss(s);
+  renderHome(); updateSettingsStats(); toast('Data reset');
+}
+
+// ════════════════════════════════════════
+//  SHARE / COPY
+// ════════════════════════════════════════
+function copyFact(){
+  const f=getFactAt(currentSlot);
+  navigator.clipboard.writeText(`📚 ${f.c}\n\n${f.t}\n\n${f.h}\n\n— Curious Daily`)
+    .then(()=>toast('Copied ✓'));
+}
+function shareFact(){
+  const f=getFactAt(currentSlot);
+  if(navigator.share) navigator.share({title:'Curious Daily',text:f.t});
+  else copyFact();
+}
+
+// ════════════════════════════════════════
+//  VIEWS
+// ════════════════════════════════════════
+function showView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  const el=document.getElementById(id);
+  if(el) el.classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const nb=document.getElementById('nav-'+id);
+  if(nb) nb.classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='allFacts') renderAllFacts(document.getElementById('searchIn').value);
+  if(id==='settings') updateSettingsStats();
+}
+
+// ════════════════════════════════════════
+//  TOAST
+// ════════════════════════════════════════
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+// ════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════
+updateStreak();
+renderHome(todaySlot());
+loadSettings();
+</script>
+</body>
+</html>
